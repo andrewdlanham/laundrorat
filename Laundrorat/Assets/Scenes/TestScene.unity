@@ -774,7 +774,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20cd3bc08d5457741bef385770f162dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numPointsWorth: 0
+  numPointsWorth: 100
   collectableCollider: {fileID: 0}
 --- !u!212 &425632237
 SpriteRenderer:
@@ -1294,7 +1294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20cd3bc08d5457741bef385770f162dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numPointsWorth: 0
+  numPointsWorth: 100
   collectableCollider: {fileID: 0}
 --- !u!212 &579666468
 SpriteRenderer:
@@ -1616,7 +1616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20cd3bc08d5457741bef385770f162dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numPointsWorth: 0
+  numPointsWorth: 100
   collectableCollider: {fileID: 0}
 --- !u!212 &945217257
 SpriteRenderer:

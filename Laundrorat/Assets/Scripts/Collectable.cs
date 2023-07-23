@@ -14,6 +14,7 @@ public class Collectable : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other) {
         Debug.Log("Collectable triggered");
+        GameObject.Find("ScoreManager").GetComponent<ScoreManager>().AddPointsToScore(numPointsWorth);
         Destroy(this.gameObject);
     }
 }
