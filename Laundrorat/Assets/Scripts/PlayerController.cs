@@ -5,9 +5,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
+
+    [SerializeField] private CharacterMovement characterMovement;
+
     [SerializeField] private LayerMask trampolineMask;
+
     
-    [SerializeField] private LayerMask ceilingMask;
 
     [SerializeField] private LayerMask trampolineExitPointMask;
 
@@ -33,6 +36,7 @@ public class PlayerController : MonoBehaviour
         movementSpeed = 8f;
         bouncingSpeed = 5f;
         playerCollider = GetComponent<BoxCollider2D>();
+        characterMovement = GameObject.Find("CharacterMovement").GetComponent<CharacterMovement>();
     }
 
     void Update()
@@ -42,7 +46,7 @@ public class PlayerController : MonoBehaviour
 
 
         if (isBouncing) {
-            if (currentVerticalDirection == Vector2.up && IsUnderCeiling() || (currentVerticalDirection == Vector2.down && OverTrampoline())) {
+            if (currentVerticalDirection == Vector2.up && characterMovement.IsUnderCeiling(this.gameObject) || (currentVerticalDirection == Vector2.down && OverTrampoline())) {
                 ReverseVerticalDirection();
             }
             if (CanExit()) {
@@ -68,9 +72,7 @@ public class PlayerController : MonoBehaviour
         return (Vector2) transform.position - new Vector2(0f, playerCollider.bounds.extents.y);
     }
 
-    private Vector2 GetTopOfCharacter() {
-        return (Vector2) transform.position + new Vector2(0f, playerCollider.bounds.extents.y);
-    }
+    
 
     private void ReverseVerticalDirection() {
         if (currentVerticalDirection == Vector2.up) {
@@ -80,13 +82,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool IsUnderCeiling() {
-        if (Physics.Raycast(GetTopOfCharacter(), Vector2.up, out RaycastHit hit, 0.2f, ceilingMask)) {
-            Debug.Log("Player is under ceiling");
-            return true;
-        }
-        return false;
-    }
+    
 
     private void HandleExit() {
         SwitchToGrounded();
