@@ -41,11 +41,19 @@ public class CharacterMovement
     }
     #endregion
 
-    #region Jumping
-    // TODO
-    #endregion
+    public static GameObject GetJumpPointObject(CharacterController character) {
+        Physics.Raycast(character.gameObject.transform.position, character.currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask);
+        GameObject jumpPointObject = hit.collider.gameObject;
+        return jumpPointObject;
+    }
 
-    
+    public static GameObject GetExitPointObject(CharacterController character) {
+        Physics.Raycast(character.gameObject.transform.position, character.currentHorizontalDirection, out RaycastHit hit, 1f, trampolineExitPointMask);
+        GameObject exitPointObject = hit.collider.gameObject;
+        return exitPointObject;
+    }
+
+
 
 
 }

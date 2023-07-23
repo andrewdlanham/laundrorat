@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : Character
+public class PlayerController : CharacterController
 {
 
     [SerializeField] private LayerMask trampolineExitPointMask;
@@ -13,8 +13,7 @@ public class PlayerController : Character
     private float horizontalInput;
 
     void Awake() {
-        this.isGrounded = true;
-        this.isBouncing = false;
+        SwitchToGrounded();
         this.movementSpeed = 8f;
         this.bouncingSpeed = 5f;
     }
@@ -28,8 +27,8 @@ public class PlayerController : Character
             if (this.currentVerticalDirection == Vector2.up && CharacterMovement.IsUnderCeiling(this.gameObject) || (this.currentVerticalDirection == Vector2.down && CharacterMovement.OverTrampoline(this.gameObject))) {
                 ReverseVerticalDirection();
             }
-            if (CanExit()) {
-                HandleExit();
+            if (CanExitBouncing()) {
+                ExitBouncing();
             }
             ContinueBouncing();
         }
@@ -38,13 +37,17 @@ public class PlayerController : Character
             if (CharacterMovement.OverTrampoline(this.gameObject)) {
                 SwitchToBouncing();
             }
-            if (CanJump()) {
-                HandleJump();
+            if (CanEnterBouncing()) {
+                EnterBouncing();
             }
             HandleHorizontalMovement();
         }
         
         
+    }
+
+    private void HandleHorizontalMovement() {
+        this.gameObject.transform.Translate(this.currentHorizontalDirection * this.bouncingSpeed * Time.deltaTime);
     }
 
     private void ReverseVerticalDirection() {
@@ -54,33 +57,6 @@ public class PlayerController : Character
             this.currentVerticalDirection = Vector2.up;
         }
     }
-
-    private void HandleExit() {
-        SwitchToGrounded();
-        GameObject exitPointObject = getExitPointObject();
-        transform.position = exitPointObject.transform.position;
-    }
-
-    private void HandleJump() {
-        SwitchToBouncing();
-        this.currentVerticalDirection = Vector2.down;
-        GameObject jumpPointObject = getJumpPointObject();
-        transform.position = jumpPointObject.transform.position;
-
-    }
-
-    private GameObject getJumpPointObject() {
-        Physics.Raycast(transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask);
-        GameObject jumpPointObject = hit.collider.gameObject;
-        return jumpPointObject;
-    }
-
-    private GameObject getExitPointObject() {
-        Physics.Raycast(transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1f, trampolineExitPointMask);
-        GameObject exitPointObject = hit.collider.gameObject;
-        return exitPointObject;
-    }
-
     
     private void UpdateHorizontalInput() {
         horizontalInput = Input.GetAxis("Horizontal");
@@ -90,7 +66,7 @@ public class PlayerController : Character
         this.currentHorizontalDirection = new Vector2(horizontalInput, 0f);
     }
 
-    private bool CanExit() {
+    private bool CanExitBouncing() {
         if (this.currentVerticalDirection == Vector2.down) return false;
         if (Physics.Raycast(transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1f, trampolineExitPointMask)) {
             Debug.Log("Player can exit");
@@ -102,7 +78,7 @@ public class PlayerController : Character
         
     }
 
-    private bool CanJump() {
+    private bool CanEnterBouncing() {
         if (Physics.Raycast(transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask)) {
             Debug.Log("Player can jump");
             return true;
