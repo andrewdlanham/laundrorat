@@ -17,8 +17,8 @@ public class PlayerController : MonoBehaviour
     private float movementSpeed;
     private float bouncingSpeed;
 
-    [SerializeField] private bool isGrounded;
-    [SerializeField] private bool isBouncing;
+    private bool isGrounded;
+    private bool isBouncing;
 
     private float horizontalInput;
     [SerializeField] private Vector2 currentHorizontalDirection; //TODO: Remove SField after testing
@@ -42,20 +42,20 @@ public class PlayerController : MonoBehaviour
 
 
         if (isBouncing) {
-            if (currentVerticalDirection == Vector2.up && isUnderCeiling() || (currentVerticalDirection == Vector2.down && PlayerOverTrampoline())) {
+            if (currentVerticalDirection == Vector2.up && IsUnderCeiling() || (currentVerticalDirection == Vector2.down && OverTrampoline())) {
                 ReverseVerticalDirection();
             }
-            if (PlayerCanExit()) {
+            if (CanExit()) {
                 HandleExit();
             }
             ContinueBouncing();
         }
 
         if (isGrounded) {
-            if (PlayerOverTrampoline()) {
+            if (OverTrampoline()) {
                 SwitchToBouncing();
             }
-            if (PlayerCanJump()) {
+            if (CanJump()) {
                 handleJump();
             }
             HandleHorizontalMovement();
@@ -64,11 +64,11 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    private Vector2 getBottomOfPlayer() {
+    private Vector2 GetBottomOfCharacter() {
         return (Vector2) transform.position - new Vector2(0f, playerCollider.bounds.extents.y);
     }
 
-    private Vector2 getTopOfPlayer() {
+    private Vector2 GetTopOfCharacter() {
         return (Vector2) transform.position + new Vector2(0f, playerCollider.bounds.extents.y);
     }
 
@@ -80,8 +80,8 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private bool isUnderCeiling() {
-        if (Physics.Raycast(getTopOfPlayer(), Vector2.up, out RaycastHit hit, 0.2f, ceilingMask)) {
+    private bool IsUnderCeiling() {
+        if (Physics.Raycast(GetTopOfCharacter(), Vector2.up, out RaycastHit hit, 0.2f, ceilingMask)) {
             Debug.Log("Player is under ceiling");
             return true;
         }
@@ -133,7 +133,7 @@ public class PlayerController : MonoBehaviour
         currentHorizontalDirection = new Vector2(horizontalInput, 0f);
     }
 
-    private bool PlayerCanExit() {
+    private bool CanExit() {
         if (currentVerticalDirection == Vector2.down) return false;
         if (Physics.Raycast(transform.position, currentHorizontalDirection, out RaycastHit hit, 1f, trampolineExitPointMask)) {
             Debug.Log("Player can exit");
@@ -145,7 +145,7 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    private bool PlayerCanJump() {
+    private bool CanJump() {
         if (Physics.Raycast(transform.position, currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask)) {
             Debug.Log("Player can jump");
             return true;
@@ -157,8 +157,8 @@ public class PlayerController : MonoBehaviour
         transform.Translate(currentHorizontalDirection * movementSpeed * Time.deltaTime);
     }
 
-    private bool PlayerOverTrampoline() {
-        if (Physics.Raycast(getBottomOfPlayer(), Vector2.down, out RaycastHit hit, 0.2f, trampolineMask)) {
+    private bool OverTrampoline() {
+        if (Physics.Raycast(GetBottomOfCharacter(), Vector2.down, out RaycastHit hit, 0.2f, trampolineMask)) {
             Debug.Log("Player is over trampoline");
             return true;
         }
