@@ -11,13 +11,25 @@ public class PlayerController : CharacterController
         SwitchToGrounded();
         this.movementSpeed = 8f;
         this.bouncingSpeed = 5f;
+        this.currentFloor = 0;
     }
 
     void Update()
     {   
         UpdateHorizontalInput();
         UpdateHorizontalDirection();
+        HandleMovement();
+    }
 
+    private void UpdateHorizontalInput() {
+        horizontalInput = Input.GetAxis("Horizontal");
+    }
+
+    private void UpdateHorizontalDirection() {
+        this.currentHorizontalDirection = new Vector2(horizontalInput, 0f);
+    }
+
+    private void HandleMovement() {
         if (IsBouncing()) {
             if (CharacterMovement.ShouldReverseVerticalDirection(this)) {
                 ReverseVerticalDirection();
@@ -37,16 +49,6 @@ public class PlayerController : CharacterController
             }
             HandleHorizontalMovement();
         }
-        
-        
-    }
-
-    private void UpdateHorizontalInput() {
-        horizontalInput = Input.GetAxis("Horizontal");
-    }
-
-    private void UpdateHorizontalDirection() {
-        this.currentHorizontalDirection = new Vector2(horizontalInput, 0f);
     }
 
 }

@@ -7,11 +7,14 @@ public class CharacterController : MonoBehaviour
     public float movementSpeed;
     public float bouncingSpeed;
 
-    protected bool isGrounded;
-    protected bool isBouncing;
+    public bool isGrounded;
+    public bool isBouncing;
 
     public Vector2 currentHorizontalDirection;
     public Vector2 currentVerticalDirection;
+
+    public int currentFloor;
+
 
     protected bool IsGrounded() {
         return this.isGrounded;
@@ -28,8 +31,8 @@ public class CharacterController : MonoBehaviour
 
     protected void SwitchToBouncing() {
         this.currentVerticalDirection = Vector2.up;
-        this.isBouncing = true;
         this.isGrounded = false;
+        this.isBouncing = true;
     }
 
     protected void EnterBouncing() {
@@ -50,7 +53,7 @@ public class CharacterController : MonoBehaviour
     }
 
     protected void HandleHorizontalMovement() {
-        this.gameObject.transform.Translate(this.currentHorizontalDirection * this.bouncingSpeed * Time.deltaTime);
+        this.gameObject.transform.Translate(this.currentHorizontalDirection * this.movementSpeed * Time.deltaTime);
     }
 
     protected void ReverseVerticalDirection() {
@@ -60,19 +63,5 @@ public class CharacterController : MonoBehaviour
             this.currentVerticalDirection = Vector2.up;
         }
     }
-
-    
-
-    
-
-
-
-
-
-
-
-    
-
-    
 
 }
