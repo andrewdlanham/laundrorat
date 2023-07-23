@@ -25,11 +25,13 @@ public class CharacterController : MonoBehaviour
     }
 
     protected void SwitchToGrounded() {
+        this.GetComponent<BoxCollider2D>().enabled = true;
         this.isGrounded = true;
         this.isBouncing = false;
     }
 
     protected void SwitchToBouncing() {
+        this.GetComponent<BoxCollider2D>().enabled = false;
         this.currentVerticalDirection = Vector2.up;
         this.isGrounded = false;
         this.isBouncing = true;

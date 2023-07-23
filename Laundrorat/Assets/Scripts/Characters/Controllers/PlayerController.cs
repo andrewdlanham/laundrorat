@@ -9,7 +9,7 @@ public class PlayerController : CharacterController
 
     void Awake() {
         SwitchToGrounded();
-        this.movementSpeed = 8f;
+        this.movementSpeed = 3f;
         this.bouncingSpeed = 5f;
         this.currentFloor = 0;
     }
@@ -49,6 +49,11 @@ public class PlayerController : CharacterController
             }
             HandleHorizontalMovement();
         }
+    }
+
+    void OnCollisionEnter2D (Collision2D collision) {
+        Debug.Log("Player collided with enemy!");
+        GameObject.Find("GameManager").GetComponent<GameManager>().TriggerDeathSequence();
     }
 
 }

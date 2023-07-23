@@ -10,7 +10,7 @@ public class EnemyController : CharacterController
     void Awake() {
         player = GameObject.Find("Player").GetComponent<PlayerController>();
         SwitchToGrounded();
-        this.movementSpeed = 4f;
+        this.movementSpeed = 2f;
         this.bouncingSpeed = 5f;
         this.currentHorizontalDirection = Vector2.left;
     }
