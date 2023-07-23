@@ -33,11 +33,26 @@ public class CharacterMovement
         return false;
     }
 
-    public static bool OverTrampoline(GameObject character) {
+    public static bool IsOverTrampoline(GameObject character) {
         if (Physics.Raycast(GetBottomOfCharacter(character), Vector2.down, out RaycastHit hit, 0.2f, trampolineMask)) {
             return true;
         }
         return false;
+    }
+
+    public static bool CanEnterBouncing(CharacterController character) {
+        if (Physics.Raycast(character.gameObject.transform.position, character.currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static bool CanExitBouncing(CharacterController character) {
+        if (character.currentVerticalDirection == Vector2.down) return false;
+        if (Physics.Raycast(character.gameObject.transform.position, character.currentHorizontalDirection, out RaycastHit hit, 1f, trampolineExitPointMask)) {
+            return true;
+        }
+        return false;   
     }
     #endregion
 
@@ -51,6 +66,18 @@ public class CharacterMovement
         Physics.Raycast(character.gameObject.transform.position, character.currentHorizontalDirection, out RaycastHit hit, 1f, trampolineExitPointMask);
         GameObject exitPointObject = hit.collider.gameObject;
         return exitPointObject;
+    }
+
+    public static bool ShouldReverseVerticalDirection(CharacterController character) {
+        return (IsBouncingIntoTrampoline(character) || IsBouncingIntoCeiling(character));
+    }
+
+    private static bool IsBouncingIntoCeiling(CharacterController character) {
+        return character.currentVerticalDirection == Vector2.up && IsUnderCeiling(character.gameObject);
+    }
+
+    private static bool IsBouncingIntoTrampoline(CharacterController character) {
+        return character.currentVerticalDirection == Vector2.down && IsOverTrampoline(character.gameObject);
     }
 
 

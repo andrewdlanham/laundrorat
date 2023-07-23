@@ -32,10 +32,6 @@ public class CharacterController : MonoBehaviour
         this.isGrounded = false;
     }
 
-    protected void ContinueBouncing() {
-        this.gameObject.transform.Translate(this.currentVerticalDirection * this.bouncingSpeed * Time.deltaTime);
-    }
-
     protected void EnterBouncing() {
         SwitchToBouncing();
         this.currentVerticalDirection = Vector2.down;
@@ -48,6 +44,28 @@ public class CharacterController : MonoBehaviour
         GameObject exitPointObject = CharacterMovement.GetExitPointObject(this);
         transform.position = exitPointObject.transform.position;
     }
+
+    protected void ContinueBouncing() {
+        this.gameObject.transform.Translate(this.currentVerticalDirection * this.bouncingSpeed * Time.deltaTime);
+    }
+
+    protected void HandleHorizontalMovement() {
+        this.gameObject.transform.Translate(this.currentHorizontalDirection * this.bouncingSpeed * Time.deltaTime);
+    }
+
+    protected void ReverseVerticalDirection() {
+        if (this.currentVerticalDirection == Vector2.up) {
+            this.currentVerticalDirection = Vector2.down;
+        } else {
+            this.currentVerticalDirection = Vector2.up;
+        }
+    }
+
+    
+
+    
+
+
 
 
 

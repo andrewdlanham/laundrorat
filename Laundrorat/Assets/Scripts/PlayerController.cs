@@ -5,11 +5,6 @@ using UnityEngine;
 public class PlayerController : CharacterController
 {
 
-    [SerializeField] private LayerMask trampolineExitPointMask;
-
-    [SerializeField] private LayerMask jumpPointMask;
-
-
     private float horizontalInput;
 
     void Awake() {
@@ -24,20 +19,20 @@ public class PlayerController : CharacterController
         UpdateHorizontalDirection();
 
         if (IsBouncing()) {
-            if (this.currentVerticalDirection == Vector2.up && CharacterMovement.IsUnderCeiling(this.gameObject) || (this.currentVerticalDirection == Vector2.down && CharacterMovement.OverTrampoline(this.gameObject))) {
+            if (CharacterMovement.ShouldReverseVerticalDirection(this)) {
                 ReverseVerticalDirection();
             }
-            if (CanExitBouncing()) {
+            if (CharacterMovement.CanExitBouncing(this)) {
                 ExitBouncing();
             }
             ContinueBouncing();
         }
 
         if (IsGrounded()) {
-            if (CharacterMovement.OverTrampoline(this.gameObject)) {
+            if (CharacterMovement.IsOverTrampoline(this.gameObject)) {
                 SwitchToBouncing();
             }
-            if (CanEnterBouncing()) {
+            if (CharacterMovement.CanEnterBouncing(this)) {
                 EnterBouncing();
             }
             HandleHorizontalMovement();
@@ -46,18 +41,6 @@ public class PlayerController : CharacterController
         
     }
 
-    private void HandleHorizontalMovement() {
-        this.gameObject.transform.Translate(this.currentHorizontalDirection * this.bouncingSpeed * Time.deltaTime);
-    }
-
-    private void ReverseVerticalDirection() {
-        if (this.currentVerticalDirection == Vector2.up) {
-            this.currentVerticalDirection = Vector2.down;
-        } else {
-            this.currentVerticalDirection = Vector2.up;
-        }
-    }
-    
     private void UpdateHorizontalInput() {
         horizontalInput = Input.GetAxis("Horizontal");
     }
@@ -65,32 +48,5 @@ public class PlayerController : CharacterController
     private void UpdateHorizontalDirection() {
         this.currentHorizontalDirection = new Vector2(horizontalInput, 0f);
     }
-
-    private bool CanExitBouncing() {
-        if (this.currentVerticalDirection == Vector2.down) return false;
-        if (Physics.Raycast(transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1f, trampolineExitPointMask)) {
-            Debug.Log("Player can exit");
-            return true;
-        }
-
-        //Debug.Log("Player cannot exit");
-        return false;
-        
-    }
-
-    private bool CanEnterBouncing() {
-        if (Physics.Raycast(transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask)) {
-            Debug.Log("Player can jump");
-            return true;
-        }
-        return false;
-    }
-
-    
-
-    
-
-    
-
 
 }
