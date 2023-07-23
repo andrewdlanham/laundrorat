@@ -2,41 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Character
 {
-
-
-    [SerializeField] private CharacterMovement characterMovement;
-
-    [SerializeField] private LayerMask trampolineMask;
-
-    
 
     [SerializeField] private LayerMask trampolineExitPointMask;
 
     [SerializeField] private LayerMask jumpPointMask;
 
 
-    private float movementSpeed;
-    private float bouncingSpeed;
-
-    private bool isGrounded;
-    private bool isBouncing;
-
     private float horizontalInput;
-    [SerializeField] private Vector2 currentHorizontalDirection; //TODO: Remove SField after testing
-    [SerializeField] private Vector2 currentVerticalDirection;  //TODO: Remove SField after testing
-
-    private BoxCollider2D playerCollider;
-    
 
     void Awake() {
-        isGrounded= true;
-        isBouncing = false;
-        movementSpeed = 8f;
-        bouncingSpeed = 5f;
-        playerCollider = GetComponent<BoxCollider2D>();
-        characterMovement = GameObject.Find("CharacterMovement").GetComponent<CharacterMovement>();
+        this.isGrounded = true;
+        this.isBouncing = false;
+        this.movementSpeed = 8f;
+        this.bouncingSpeed = 5f;
     }
 
     void Update()
@@ -44,9 +24,8 @@ public class PlayerController : MonoBehaviour
         UpdateHorizontalInput();
         UpdateHorizontalDirection();
 
-
-        if (isBouncing) {
-            if (currentVerticalDirection == Vector2.up && characterMovement.IsUnderCeiling(this.gameObject) || (currentVerticalDirection == Vector2.down && OverTrampoline())) {
+        if (IsBouncing()) {
+            if (this.currentVerticalDirection == Vector2.up && CharacterMovement.IsUnderCeiling(this.gameObject) || (this.currentVerticalDirection == Vector2.down && CharacterMovement.OverTrampoline(this.gameObject))) {
                 ReverseVerticalDirection();
             }
             if (CanExit()) {
@@ -55,12 +34,12 @@ public class PlayerController : MonoBehaviour
             ContinueBouncing();
         }
 
-        if (isGrounded) {
-            if (OverTrampoline()) {
+        if (IsGrounded()) {
+            if (CharacterMovement.OverTrampoline(this.gameObject)) {
                 SwitchToBouncing();
             }
             if (CanJump()) {
-                handleJump();
+                HandleJump();
             }
             HandleHorizontalMovement();
         }
@@ -68,21 +47,13 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    private Vector2 GetBottomOfCharacter() {
-        return (Vector2) transform.position - new Vector2(0f, playerCollider.bounds.extents.y);
-    }
-
-    
-
     private void ReverseVerticalDirection() {
-        if (currentVerticalDirection == Vector2.up) {
-            currentVerticalDirection = Vector2.down;
+        if (this.currentVerticalDirection == Vector2.up) {
+            this.currentVerticalDirection = Vector2.down;
         } else {
-            currentVerticalDirection = Vector2.up;
+            this.currentVerticalDirection = Vector2.up;
         }
     }
-
-    
 
     private void HandleExit() {
         SwitchToGrounded();
@@ -90,48 +61,38 @@ public class PlayerController : MonoBehaviour
         transform.position = exitPointObject.transform.position;
     }
 
-    private void handleJump() {
+    private void HandleJump() {
         SwitchToBouncing();
-        currentVerticalDirection = Vector2.down;
+        this.currentVerticalDirection = Vector2.down;
         GameObject jumpPointObject = getJumpPointObject();
         transform.position = jumpPointObject.transform.position;
 
     }
 
     private GameObject getJumpPointObject() {
-        Physics.Raycast(transform.position, currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask);
+        Physics.Raycast(transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask);
         GameObject jumpPointObject = hit.collider.gameObject;
         return jumpPointObject;
     }
 
     private GameObject getExitPointObject() {
-        Physics.Raycast(transform.position, currentHorizontalDirection, out RaycastHit hit, 1f, trampolineExitPointMask);
+        Physics.Raycast(transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1f, trampolineExitPointMask);
         GameObject exitPointObject = hit.collider.gameObject;
         return exitPointObject;
     }
 
-    private void SwitchToGrounded() {
-        isGrounded = true;
-        isBouncing = false;
-    }
-
-    private void SwitchToBouncing() {
-        currentVerticalDirection = Vector2.up;
-        isBouncing = true;
-        isGrounded = false;
-    }
-
+    
     private void UpdateHorizontalInput() {
         horizontalInput = Input.GetAxis("Horizontal");
     }
 
     private void UpdateHorizontalDirection() {
-        currentHorizontalDirection = new Vector2(horizontalInput, 0f);
+        this.currentHorizontalDirection = new Vector2(horizontalInput, 0f);
     }
 
     private bool CanExit() {
-        if (currentVerticalDirection == Vector2.down) return false;
-        if (Physics.Raycast(transform.position, currentHorizontalDirection, out RaycastHit hit, 1f, trampolineExitPointMask)) {
+        if (this.currentVerticalDirection == Vector2.down) return false;
+        if (Physics.Raycast(transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1f, trampolineExitPointMask)) {
             Debug.Log("Player can exit");
             return true;
         }
@@ -142,28 +103,18 @@ public class PlayerController : MonoBehaviour
     }
 
     private bool CanJump() {
-        if (Physics.Raycast(transform.position, currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask)) {
+        if (Physics.Raycast(transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask)) {
             Debug.Log("Player can jump");
             return true;
         }
         return false;
     }
 
-    private void HandleHorizontalMovement() {
-        transform.Translate(currentHorizontalDirection * movementSpeed * Time.deltaTime);
-    }
+    
 
-    private bool OverTrampoline() {
-        if (Physics.Raycast(GetBottomOfCharacter(), Vector2.down, out RaycastHit hit, 0.2f, trampolineMask)) {
-            Debug.Log("Player is over trampoline");
-            return true;
-        }
-        return false;
-    }
+    
 
-    private void ContinueBouncing() {
-        transform.Translate(currentVerticalDirection * bouncingSpeed * Time.deltaTime);
-    }
+    
 
 
 }
