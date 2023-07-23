@@ -37,28 +37,28 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {   
-        updateHorizontalInput();
-        updatecurrentHorizontalDirection();
+        UpdateHorizontalInput();
+        UpdateHorizontalDirection();
 
 
         if (isBouncing) {
-            if (currentVerticalDirection == Vector2.up && isUnderCeiling() || (currentVerticalDirection == Vector2.down && isOverTrampoline())) {
-                reverseVerticalDirection();
+            if (currentVerticalDirection == Vector2.up && isUnderCeiling() || (currentVerticalDirection == Vector2.down && PlayerOverTrampoline())) {
+                ReverseVerticalDirection();
             }
-            if (canExit()) {
-                handleExit();
+            if (PlayerCanExit()) {
+                HandleExit();
             }
-            continueBouncing();
+            ContinueBouncing();
         }
 
         if (isGrounded) {
-            if (isOverTrampoline()) {
-                switchToBouncing();
+            if (PlayerOverTrampoline()) {
+                SwitchToBouncing();
             }
-            if (canJump()) {
+            if (PlayerCanJump()) {
                 handleJump();
             }
-            handleHorizontalMovement();
+            HandleHorizontalMovement();
         }
         
         
@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
         return (Vector2) transform.position + new Vector2(0f, playerCollider.bounds.extents.y);
     }
 
-    private void reverseVerticalDirection() {
+    private void ReverseVerticalDirection() {
         if (currentVerticalDirection == Vector2.up) {
             currentVerticalDirection = Vector2.down;
         } else {
@@ -88,14 +88,14 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    private void handleExit() {
-        switchToGrounded();
+    private void HandleExit() {
+        SwitchToGrounded();
         GameObject exitPointObject = getExitPointObject();
         transform.position = exitPointObject.transform.position;
     }
 
     private void handleJump() {
-        switchToBouncing();
+        SwitchToBouncing();
         currentVerticalDirection = Vector2.down;
         GameObject jumpPointObject = getJumpPointObject();
         transform.position = jumpPointObject.transform.position;
@@ -114,26 +114,26 @@ public class PlayerController : MonoBehaviour
         return exitPointObject;
     }
 
-    private void switchToGrounded() {
+    private void SwitchToGrounded() {
         isGrounded = true;
         isBouncing = false;
     }
 
-    private void switchToBouncing() {
+    private void SwitchToBouncing() {
         currentVerticalDirection = Vector2.up;
         isBouncing = true;
         isGrounded = false;
     }
 
-    private void updateHorizontalInput() {
+    private void UpdateHorizontalInput() {
         horizontalInput = Input.GetAxis("Horizontal");
     }
 
-    private void updatecurrentHorizontalDirection() {
+    private void UpdateHorizontalDirection() {
         currentHorizontalDirection = new Vector2(horizontalInput, 0f);
     }
 
-    private bool canExit() {
+    private bool PlayerCanExit() {
         if (currentVerticalDirection == Vector2.down) return false;
         if (Physics.Raycast(transform.position, currentHorizontalDirection, out RaycastHit hit, 1f, trampolineExitPointMask)) {
             Debug.Log("Player can exit");
@@ -145,7 +145,7 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    private bool canJump() {
+    private bool PlayerCanJump() {
         if (Physics.Raycast(transform.position, currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask)) {
             Debug.Log("Player can jump");
             return true;
@@ -153,11 +153,11 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    private void handleHorizontalMovement() {
+    private void HandleHorizontalMovement() {
         transform.Translate(currentHorizontalDirection * movementSpeed * Time.deltaTime);
     }
 
-    private bool isOverTrampoline() {
+    private bool PlayerOverTrampoline() {
         if (Physics.Raycast(getBottomOfPlayer(), Vector2.down, out RaycastHit hit, 0.2f, trampolineMask)) {
             Debug.Log("Player is over trampoline");
             return true;
@@ -165,7 +165,7 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    private void continueBouncing() {
+    private void ContinueBouncing() {
         transform.Translate(currentVerticalDirection * bouncingSpeed * Time.deltaTime);
     }
 
