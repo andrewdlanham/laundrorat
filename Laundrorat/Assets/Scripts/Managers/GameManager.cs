@@ -32,11 +32,20 @@ public class GameManager : MonoBehaviour
     public void TriggerDeathSequence() {
         Debug.Log("DEATH");
         livesManager.LoseALife();
-        ReloadCurrentScene();
+        if (livesManager.numLives < 1) {
+            GameOver();
+        } else {
+            ReloadCurrentScene();
+        }
     }
 
     private void ReloadCurrentScene() {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
+    }
+
+    private void GameOver() {
+        Debug.Log("GAME OVER");
+        SceneManager.LoadScene("MainMenu");
     }
 }

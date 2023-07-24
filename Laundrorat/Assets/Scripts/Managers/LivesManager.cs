@@ -8,20 +8,21 @@ public class LivesManager : MonoBehaviour
 {
     
     private TextMeshProUGUI livesText;
-    private int numLives;
+    public int numLives;
 
     void Awake() {
-        numLives = 3;
+        numLives = PlayerPrefs.GetInt("Lives");
         livesText = GameObject.Find("LivesText").GetComponent<TextMeshProUGUI>();
         UpdateLivesText();
     }
 
     public void LoseALife() {
         numLives--;
+        PlayerPrefs.SetInt("Lives", numLives);
         UpdateLivesText();
     }
 
     public void UpdateLivesText() {
-        livesText.text = "L: " + numLives.ToString();;
+        livesText.text = "L: " + numLives.ToString();
     }
 }
