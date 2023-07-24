@@ -11,10 +11,13 @@ public class TimerManager : MonoBehaviour
 
 
     private float currentTime = 0f;
-    private float startingTime = 60f;
+    private float startingTime = 10f;
+
+    private bool timeIsUp;
 
     void Awake() {
         timerText = GameObject.Find("TimerText").GetComponent<TextMeshProUGUI>();
+        timeIsUp = false;
     }
 
     void Start()
@@ -24,8 +27,11 @@ public class TimerManager : MonoBehaviour
 
     void Update()
     {
-        currentTime -= 1 * Time.deltaTime;
-        int roundedTime = Mathf.CeilToInt(currentTime);
-        timerText.text = roundedTime.ToString();
+        if (!timeIsUp) {
+            currentTime -= 1 * Time.deltaTime;
+            int roundedTime = Mathf.CeilToInt(currentTime);
+            if (roundedTime == 0) timeIsUp = true;
+            timerText.text = roundedTime.ToString();
+        }
     }
 }
