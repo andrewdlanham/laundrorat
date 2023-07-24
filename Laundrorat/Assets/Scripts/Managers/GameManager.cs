@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     private LivesManager livesManager;
     private AudioManager audioManager;
     private TimerManager timerManager;
+    private EnemyManager enemyManager;
 
     void Awake() {
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
         livesManager = GameObject.Find("LivesManager").GetComponent<LivesManager>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         timerManager = GameObject.Find("TimerManager").GetComponent<TimerManager>();
+        enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemyManager>();
     }
 
     public void FinishLevel() {
@@ -37,11 +39,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("DEATH");
         livesManager.LoseALife();
         if (livesManager.numLives < 1) {
-            GameOver();
+            StartCoroutine(GameOverCutscene());
         } else {
-            FreezeLevel();
             StartCoroutine(DeathCutscene());
-            
         }
     }
 
@@ -50,13 +50,17 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(currentSceneIndex);
     }
 
-    private void GameOver() {
-        Debug.Log("GAME OVER");
+    IEnumerator GameOverCutscene() {
+        Debug.Log("GameOverCutscene");
+        FreezeLevel();
+        audioManager.PlaySound("PlayerDeath");
+        yield return new WaitForSeconds(3f);
         SceneManager.LoadScene("MainMenu");
     }
 
     IEnumerator DeathCutscene() {
         Debug.Log("DeathCutscene");
+        FreezeLevel();
         audioManager.PlaySound("PlayerDeath");
         yield return new WaitForSeconds(3f);
         ReloadCurrentScene();
@@ -65,5 +69,6 @@ public class GameManager : MonoBehaviour
     private void FreezeLevel() {
         playerController.enabled = false;
         timerManager.enabled = false;
+        enemyManager.DisableAllEnemies();
     }
 }
