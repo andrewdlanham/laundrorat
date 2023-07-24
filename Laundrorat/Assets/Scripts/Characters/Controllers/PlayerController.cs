@@ -31,7 +31,11 @@ public class PlayerController : CharacterController
 
     private void HandleMovement() {
         if (IsBouncing()) {
-            if (CharacterMovement.ShouldReverseVerticalDirection(this)) {
+            if (CharacterMovement.IsBouncingIntoTrampoline(this)) {
+                CharacterMovement.HandleTrampolineBounce(this);
+                ReverseVerticalDirection();
+            } 
+            if (CharacterMovement.IsBouncingIntoCeiling(this)) {
                 ReverseVerticalDirection();
             }
             if (CharacterMovement.CanExitBouncing(this)) {

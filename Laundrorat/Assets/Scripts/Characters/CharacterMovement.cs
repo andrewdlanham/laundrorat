@@ -13,28 +13,28 @@ public class CharacterMovement
     #endregion
 
     #region Get Character Points
-    public static Vector2 GetTopOfCharacter(GameObject character) {
-        BoxCollider2D characterCollider = character.GetComponent<BoxCollider2D>();
-        return (Vector2) character.transform.position + new Vector2(0f, characterCollider.bounds.extents.y);
+    public static Vector2 GetTopOfCharacter(GameObject characterObject) {
+        BoxCollider2D characterCollider = characterObject.GetComponent<BoxCollider2D>();
+        return (Vector2) characterObject.transform.position + new Vector2(0f, characterCollider.bounds.extents.y);
     }
 
-    public static Vector2 GetBottomOfCharacter(GameObject character) {
-        BoxCollider2D characterCollider = character.GetComponent<BoxCollider2D>();
-        return (Vector2) character.transform.position - new Vector2(0f, characterCollider.bounds.extents.y);
+    public static Vector2 GetBottomOfCharacter(GameObject characterObject) {
+        BoxCollider2D characterCollider = characterObject.GetComponent<BoxCollider2D>();
+        return (Vector2) characterObject.transform.position - new Vector2(0f, characterCollider.bounds.extents.y);
     }
 
     #endregion
 
     #region Location Checks
-    public static bool IsUnderCeiling(GameObject character) {
-        if (Physics.Raycast(GetTopOfCharacter(character), Vector2.up, out RaycastHit hit, 0.2f, ceilingMask)) {
+    public static bool IsUnderCeiling(GameObject characterObject) {
+        if (Physics.Raycast(GetTopOfCharacter(characterObject), Vector2.up, out RaycastHit hit, 0.2f, ceilingMask)) {
             return true;
         }
         return false;
     }
 
-    public static bool IsOverTrampoline(GameObject character) {
-        if (Physics.Raycast(GetBottomOfCharacter(character), Vector2.down, out RaycastHit hit, 0.2f, trampolineMask)) {
+    public static bool IsOverTrampoline(GameObject characterObject) {
+        if (Physics.Raycast(GetBottomOfCharacter(characterObject), Vector2.down, out RaycastHit hit, 0.2f, trampolineMask)) {
             return true;
         }
         return false;
@@ -68,16 +68,27 @@ public class CharacterMovement
         return exitPointObject;
     }
 
+    public static Trampoline GetTrampoline(CharacterController character) {
+        Physics.Raycast(GetBottomOfCharacter(character.gameObject), Vector2.down, out RaycastHit hit, 0.2f, trampolineMask);
+        Trampoline trampoline = hit.collider.gameObject.GetComponent<Trampoline>();
+        return trampoline;
+    }
+
     public static bool ShouldReverseVerticalDirection(CharacterController character) {
         return (IsBouncingIntoTrampoline(character) || IsBouncingIntoCeiling(character));
     }
 
-    private static bool IsBouncingIntoCeiling(CharacterController character) {
+    public static bool IsBouncingIntoCeiling(CharacterController character) {
         return character.currentVerticalDirection == Vector2.up && IsUnderCeiling(character.gameObject);
     }
 
-    private static bool IsBouncingIntoTrampoline(CharacterController character) {
+    public static bool IsBouncingIntoTrampoline(CharacterController character) {
         return character.currentVerticalDirection == Vector2.down && IsOverTrampoline(character.gameObject);
+    }
+
+    public static void HandleTrampolineBounce(CharacterController character) {
+        Trampoline trampoline = GetTrampoline(character);
+        trampoline.RegisterBounce();
     }
 
 
