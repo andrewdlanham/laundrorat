@@ -9,11 +9,15 @@ public class GameManager : MonoBehaviour
     private PlayerController playerController;
     private CollectableManager collectableManager;
     private LivesManager livesManager;
+    private AudioManager audioManager;
+    private TimerManager timerManager;
 
     void Awake() {
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         collectableManager = GameObject.Find("CollectableManager").GetComponent<CollectableManager>();
         livesManager = GameObject.Find("LivesManager").GetComponent<LivesManager>();
+        audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
+        timerManager = GameObject.Find("TimerManager").GetComponent<TimerManager>();
     }
 
     public void FinishLevel() {
@@ -35,7 +39,9 @@ public class GameManager : MonoBehaviour
         if (livesManager.numLives < 1) {
             GameOver();
         } else {
-            ReloadCurrentScene();
+            FreezeLevel();
+            StartCoroutine(DeathCutscene());
+            
         }
     }
 
@@ -47,5 +53,17 @@ public class GameManager : MonoBehaviour
     private void GameOver() {
         Debug.Log("GAME OVER");
         SceneManager.LoadScene("MainMenu");
+    }
+
+    IEnumerator DeathCutscene() {
+        Debug.Log("DeathCutscene");
+        audioManager.PlaySound("PlayerDeath");
+        yield return new WaitForSeconds(3f);
+        ReloadCurrentScene();
+    }
+
+    private void FreezeLevel() {
+        playerController.enabled = false;
+        timerManager.enabled = false;
     }
 }
