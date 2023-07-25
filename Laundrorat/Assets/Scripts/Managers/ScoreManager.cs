@@ -7,6 +7,8 @@ using TMPro;
 public class ScoreManager : MonoBehaviour
 {
 
+    [SerializeField] GameObject scorePopupPrefab;
+
     private TextMeshProUGUI scoreText;
     private TextMeshProUGUI highScoreText;
     private int currentScore;
@@ -41,5 +43,16 @@ public class ScoreManager : MonoBehaviour
         if (currentScore > oldHighScore) {
             PlayerPrefs.SetInt("HighScore", currentScore);
         }
+    }
+
+    IEnumerator ScorePopupAnimation(GameObject obj, int numPoints) {
+        GameObject newPopup = Instantiate(scorePopupPrefab, obj.transform.position, Quaternion.identity);
+        newPopup.GetComponent<TextMeshPro>().text = numPoints.ToString();
+        yield return new WaitForSeconds(2f);
+        Destroy(newPopup);
+    }
+
+    public void ShowScorePopup(GameObject obj, int numPoints) {
+        StartCoroutine(ScorePopupAnimation(obj, numPoints));
     }
 }

@@ -13,6 +13,7 @@ public class EnemyController : CharacterController
         this.movementSpeed = 2f;
         this.bouncingSpeed = 5f;
         this.currentHorizontalDirection = Vector2.left;
+        this.currentTrampoline = null;
     }
 
     void Update() {
@@ -48,11 +49,17 @@ public class EnemyController : CharacterController
         }
     }
 
+    private bool EnemyShouldExit() {
+        GameObject exitPointObject = CharacterMovement.GetExitPointObject(this);
+        int exitFloor = exitPointObject.GetComponent<ExitPoint>().floorNumber;
+        return exitFloor == player.currentFloor;
+    }
+
     private int GetExitFloor() {
         if (player.isGrounded) {
             return player.currentFloor;
         }
-        // TODO: Calculare random exit floor for other cases
+        // TODO: Calculate random exit floor for other cases
         return 0;
     }
 

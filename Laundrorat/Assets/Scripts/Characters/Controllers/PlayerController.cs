@@ -12,6 +12,7 @@ public class PlayerController : CharacterController
         this.movementSpeed = 3f;
         this.bouncingSpeed = 5f;
         this.currentFloor = 0;
+        this.currentTrampoline = null;
     }
 
     void Update()

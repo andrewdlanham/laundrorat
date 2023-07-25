@@ -86,10 +86,13 @@ public class CharacterMovement
         return character.currentVerticalDirection == Vector2.down && IsOverTrampoline(character.gameObject);
     }
 
-    public static void HandleTrampolineBounce(CharacterController character) {
-        Trampoline trampoline = GetTrampoline(character);
+    public static void HandleTrampolineBounce(PlayerController player) {
+        Trampoline trampoline = GetTrampoline(player);
         trampoline.RegisterBounce();
+        player.currentTrampoline = trampoline;
     }
+
+
 
 
 

@@ -15,6 +15,8 @@ public class CharacterController : MonoBehaviour
 
     public int currentFloor;
 
+    public Trampoline currentTrampoline;
+
 
     protected bool IsGrounded() {
         return this.isGrounded;
@@ -48,6 +50,11 @@ public class CharacterController : MonoBehaviour
         SwitchToGrounded();
         GameObject exitPointObject = CharacterMovement.GetExitPointObject(this);
         transform.position = exitPointObject.transform.position;
+        int exitFloor = exitPointObject.GetComponent<ExitPoint>().floorNumber;
+        currentFloor = exitFloor;
+        if (currentTrampoline != null) {
+            currentTrampoline.RefreshTrampoline();
+        }
     }
 
     protected void ContinueBouncing() {

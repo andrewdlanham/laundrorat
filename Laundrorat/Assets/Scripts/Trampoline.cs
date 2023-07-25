@@ -51,6 +51,10 @@ public class Trampoline : MonoBehaviour
         }
     }
 
+    public void RefreshTrampoline() {
+        numBouncesLeft = 3;
+        UpdateTrampolineColor();
+    }
 
 
 }
