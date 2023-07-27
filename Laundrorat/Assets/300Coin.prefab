@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4916963271096259845
+--- !u!1 &5667567737524728432
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4916963271096259898}
-  - component: {fileID: 4916963271096259899}
-  - component: {fileID: 4916963271096259844}
-  - component: {fileID: 4916963271096259897}
+  - component: {fileID: 5667567737524728436}
+  - component: {fileID: 5667567737524728437}
+  - component: {fileID: 5667567737524728434}
+  - component: {fileID: 5667567737524728439}
   m_Layer: 0
-  m_Name: Enemy
-  m_TagString: Enemy
+  m_Name: 300Coin
+  m_TagString: Collectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4916963271096259898
+--- !u!4 &5667567737524728436
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4916963271096259845}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.3883, y: -3.3473, z: 0}
-  m_LocalScale: {x: 0.76068336, y: 0.69485414, z: 1}
+  m_GameObject: {fileID: 5667567737524728432}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.0844, y: -1.707, z: 0}
+  m_LocalScale: {x: 0.6221042, y: 0.58399564, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &4916963271096259899
+--- !u!212 &5667567737524728437
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4916963271096259845}
+  m_GameObject: {fileID: 5667567737524728432}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -74,8 +74,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: b8ca20b9ed939a04a8718f11dac1df72, type: 3}
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: fb9708ac26234384c953c6b6e565a64f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -86,37 +86,31 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4916963271096259844
+--- !u!114 &5667567737524728434
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4916963271096259845}
+  m_GameObject: {fileID: 5667567737524728432}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df3f7c65d41b9064f8d59f02bd8c131c, type: 3}
+  m_Script: {fileID: 11500000, guid: 20cd3bc08d5457741bef385770f162dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 0
-  bouncingSpeed: 0
-  isGrounded: 0
-  isBouncing: 0
-  currentHorizontalDirection: {x: 0, y: 0}
-  currentVerticalDirection: {x: 0, y: 0}
-  currentFloor: 0
-  currentTrampoline: {fileID: 0}
---- !u!61 &4916963271096259897
+  numPointsWorth: 300
+  collectableCollider: {fileID: 0}
+--- !u!61 &5667567737524728439
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4916963271096259845}
+  m_GameObject: {fileID: 5667567737524728432}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

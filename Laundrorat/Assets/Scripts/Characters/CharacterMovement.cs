@@ -42,6 +42,7 @@ public class CharacterMovement
 
     public static bool CanEnterBouncing(CharacterController character) {
         if (Physics.Raycast(character.gameObject.transform.position, character.currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask)) {
+            Debug.Log("Can enter bouncing");
             return true;
         }
         return false;
@@ -49,7 +50,8 @@ public class CharacterMovement
 
     public static bool CanExitBouncing(CharacterController character) {
         if (character.currentVerticalDirection == Vector2.down) return false;
-        if (Physics.Raycast(character.gameObject.transform.position, character.currentHorizontalDirection, out RaycastHit hit, 2f, trampolineExitPointMask)) {
+        if (Physics.Raycast(character.gameObject.transform.position, character.currentHorizontalDirection, out RaycastHit hit, 2.5f, trampolineExitPointMask)) {
+            Debug.Log("Can exit bouncing");
             return true;
         }
         return false;   
@@ -63,7 +65,7 @@ public class CharacterMovement
     }
 
     public static GameObject GetExitPointObject(CharacterController character) {
-        Physics.Raycast(character.gameObject.transform.position, character.currentHorizontalDirection, out RaycastHit hit, 2f, trampolineExitPointMask);
+        Physics.Raycast(character.gameObject.transform.position, character.currentHorizontalDirection, out RaycastHit hit, 2.5f, trampolineExitPointMask);
         GameObject exitPointObject = hit.collider.gameObject;
         return exitPointObject;
     }

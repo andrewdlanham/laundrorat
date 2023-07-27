@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
+    public Collectable flashingCollectable;
+
+
     private PlayerController playerController;
     private CollectableManager collectableManager;
     private LivesManager livesManager;
@@ -67,6 +70,7 @@ public class GameManager : MonoBehaviour
     }
 
     private void FreezeLevel() {
+        Debug.Log("FreezeLevel");
         playerController.enabled = false;
         timerManager.enabled = false;
         enemyManager.DisableAllEnemies();

@@ -17,6 +17,7 @@ public class CharacterController : MonoBehaviour
 
     public Trampoline currentTrampoline;
 
+    public Animator animator;
 
     protected bool IsGrounded() {
         return this.isGrounded;
@@ -27,12 +28,18 @@ public class CharacterController : MonoBehaviour
     }
 
     protected void SwitchToGrounded() {
+        if (animator != null) {
+            animator.SetBool("IsBouncing", false);
+        }
         this.GetComponent<BoxCollider2D>().enabled = true;
         this.isGrounded = true;
         this.isBouncing = false;
     }
 
     protected void SwitchToBouncing() {
+        if (animator != null) {
+            animator.SetBool("IsBouncing", true);
+        }
         this.GetComponent<BoxCollider2D>().enabled = false;
         this.currentVerticalDirection = Vector2.up;
         this.isGrounded = false;

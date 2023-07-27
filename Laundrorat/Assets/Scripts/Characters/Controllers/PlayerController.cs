@@ -6,6 +6,7 @@ public class PlayerController : CharacterController
 {
 
     private float horizontalInput;
+    public Collectable lastCollectable;
 
     void Awake() {
         SwitchToGrounded();
@@ -13,6 +14,7 @@ public class PlayerController : CharacterController
         this.bouncingSpeed = 5f;
         this.currentFloor = 0;
         this.currentTrampoline = null;
+        this.animator = GetComponent<Animator>();
     }
 
     void Update()

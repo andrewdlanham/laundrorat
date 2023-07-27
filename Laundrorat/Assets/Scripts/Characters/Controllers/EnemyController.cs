@@ -14,6 +14,7 @@ public class EnemyController : CharacterController
         this.bouncingSpeed = 5f;
         this.currentHorizontalDirection = Vector2.left;
         this.currentTrampoline = null;
+        this.animator = GetComponent<Animator>();
     }
 
     void Update() {
