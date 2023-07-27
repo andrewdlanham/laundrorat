@@ -37,6 +37,8 @@ public class CharacterController : MonoBehaviour
     }
 
     protected void SwitchToBouncing() {
+        StartCoroutine(PlayJumpAnimation());
+        Debug.Log("Here");
         if (animator != null) {
             animator.SetBool("IsBouncing", true);
         }
@@ -79,5 +81,14 @@ public class CharacterController : MonoBehaviour
             this.currentVerticalDirection = Vector2.up;
         }
     }
+
+    private IEnumerator PlayJumpAnimation() {
+        Debug.Log("PlayJumpAnimation()");
+        animator.SetBool("IsJumping", true);
+        yield return new WaitForSeconds(2f);
+        animator.SetBool("IsJumping", false);
+    }
+
+    
 
 }
