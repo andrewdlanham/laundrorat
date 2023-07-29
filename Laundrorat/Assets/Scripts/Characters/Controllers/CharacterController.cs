@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CharacterController : MonoBehaviour
 {
+    public LayerMask jumpPointMask;
+    
     public float movementSpeed;
     public float bouncingSpeed;
 
@@ -19,6 +21,8 @@ public class CharacterController : MonoBehaviour
 
     public Animator animator;
 
+    public SpriteRenderer renderer;
+
     protected bool IsGrounded() {
         return this.isGrounded;
     }
@@ -28,31 +32,27 @@ public class CharacterController : MonoBehaviour
     }
 
     protected void SwitchToGrounded() {
-        if (animator != null) {
-            animator.SetBool("IsBouncing", false);
-        }
+        animator.SetBool("IsBouncing", false);
         this.GetComponent<BoxCollider2D>().enabled = true;
         this.isGrounded = true;
         this.isBouncing = false;
     }
 
     protected void SwitchToBouncing() {
-        StartCoroutine(PlayJumpAnimation());
-        Debug.Log("Here");
-        if (animator != null) {
-            animator.SetBool("IsBouncing", true);
-        }
+        Debug.Log("SwitchToBouncing()");
+        //StartCoroutine(PlayJumpAnimation());
+        animator.SetBool("IsBouncing", true);
         this.GetComponent<BoxCollider2D>().enabled = false;
-        this.currentVerticalDirection = Vector2.up;
         this.isGrounded = false;
         this.isBouncing = true;
     }
 
     protected void EnterBouncing() {
+        Debug.Log("EnterBouncing()");
         SwitchToBouncing();
-        this.currentVerticalDirection = Vector2.down;
-        GameObject jumpPointObject = CharacterMovement.GetJumpPointObject(this);
+        GameObject jumpPointObject = GetJumpPointObject();
         transform.position = jumpPointObject.transform.position;
+        this.currentVerticalDirection = Vector2.down;
     }
 
     protected void ExitBouncing() {
@@ -60,11 +60,12 @@ public class CharacterController : MonoBehaviour
         GameObject exitPointObject = CharacterMovement.GetExitPointObject(this);
         transform.position = exitPointObject.transform.position;
         int exitFloor = exitPointObject.GetComponent<ExitPoint>().floorNumber;
-        currentFloor = exitFloor;
+        this.currentFloor = exitFloor;
         if (currentTrampoline != null) {
             currentTrampoline.RefreshTrampoline();
         }
     }
+
 
     protected void ContinueBouncing() {
         this.gameObject.transform.Translate(this.currentVerticalDirection * this.bouncingSpeed * Time.deltaTime);
@@ -88,6 +89,15 @@ public class CharacterController : MonoBehaviour
         yield return new WaitForSeconds(2f);
         animator.SetBool("IsJumping", false);
     }
+
+    private GameObject GetJumpPointObject() {
+        Debug.Log("GetJumpPointObject()");
+        Physics.Raycast(this.gameObject.transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask);
+        GameObject jumpPointObject = hit.collider.gameObject;
+        return jumpPointObject;
+    }
+
+    
 
     
 

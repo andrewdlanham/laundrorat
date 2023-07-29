@@ -43,6 +43,7 @@ public class Trampoline : MonoBehaviour
     }
 
     public void RegisterBounce() {
+        Debug.Log("RegisterBounce()");
         numBouncesLeft--;
         if (numBouncesLeft == -1) {
             BreakTrampoline();

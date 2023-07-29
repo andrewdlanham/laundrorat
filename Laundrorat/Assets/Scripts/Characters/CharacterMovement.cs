@@ -10,6 +10,7 @@ public class CharacterMovement
     private static LayerMask trampolineMask = 1 << LayerMask.NameToLayer("Trampoline");
     private static LayerMask trampolineExitPointMask = 1 << LayerMask.NameToLayer("TrampolineExitPoint");
     private static LayerMask jumpPointMask = 1 << LayerMask.NameToLayer("JumpPoint");
+    private static LayerMask wallMask = 1 << LayerMask.NameToLayer("Wall");
     #endregion
 
     #region Get Character Points
@@ -56,13 +57,22 @@ public class CharacterMovement
         }
         return false;   
     }
+
+    public static bool CanBounceOffWall(PlayerController player) {
+        if (player.currentVerticalDirection == Vector2.down) return false;
+        if (player.horizontalInput == 0 ) {
+            Debug.Log("Cannot bounce without input");
+            return false;
+        }
+        if (Physics.Raycast(player.gameObject.transform.position, player.currentHorizontalDirection, out RaycastHit hit, 2.5f, wallMask)) {
+            Debug.Log("Can bounce off wall");
+            return true;
+        }
+        return false;  
+    }
     #endregion
 
-    public static GameObject GetJumpPointObject(CharacterController character) {
-        Physics.Raycast(character.gameObject.transform.position, character.currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask);
-        GameObject jumpPointObject = hit.collider.gameObject;
-        return jumpPointObject;
-    }
+    
 
     public static GameObject GetExitPointObject(CharacterController character) {
         Physics.Raycast(character.gameObject.transform.position, character.currentHorizontalDirection, out RaycastHit hit, 2.5f, trampolineExitPointMask);
@@ -93,6 +103,8 @@ public class CharacterMovement
         trampoline.RegisterBounce();
         player.currentTrampoline = trampoline;
     }
+
+
 
 
 

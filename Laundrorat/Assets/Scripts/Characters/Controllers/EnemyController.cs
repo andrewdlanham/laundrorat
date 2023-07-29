@@ -18,10 +18,10 @@ public class EnemyController : CharacterController
     }
 
     void Update() {
-        HandleMovement();
+        HandleEnemyMovement();
     }
 
-    private void HandleMovement() {
+    private void HandleEnemyMovement() {
         if (IsBouncing()) {
             if (CharacterMovement.ShouldReverseVerticalDirection(this)) {
                 ReverseVerticalDirection();
@@ -33,16 +33,13 @@ public class EnemyController : CharacterController
                 this.currentHorizontalDirection = Vector2.left;
             }
 
-            if (CharacterMovement.CanExitBouncing(this)) {
+            if (EnemyShouldExit()) {
                 ExitBouncing();
             }
             ContinueBouncing();
         }
 
         if (IsGrounded()) {
-            if (CharacterMovement.IsOverTrampoline(this.gameObject)) {
-                SwitchToBouncing();
-            }
             if (CharacterMovement.CanEnterBouncing(this)) {
                 EnterBouncing();
             }
@@ -51,9 +48,15 @@ public class EnemyController : CharacterController
     }
 
     private bool EnemyShouldExit() {
-        GameObject exitPointObject = CharacterMovement.GetExitPointObject(this);
-        int exitFloor = exitPointObject.GetComponent<ExitPoint>().floorNumber;
-        return exitFloor == player.currentFloor;
+        if (CharacterMovement.CanExitBouncing(this)) {
+            GameObject exitPointObject = CharacterMovement.GetExitPointObject(this);
+            if (exitPointObject == null) return false;
+            int exitFloor = exitPointObject.GetComponent<ExitPoint>().floorNumber;
+            return exitFloor == GetExitFloor();
+        } else {
+            return false;
+        }
+        
     }
 
     private int GetExitFloor() {
