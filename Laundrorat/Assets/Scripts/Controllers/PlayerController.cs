@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : CharacterController
+public class PlayerController : Controller
 {
 
     public float horizontalInput;
@@ -14,7 +14,7 @@ public class PlayerController : CharacterController
         SetComponentReferences();
         SetLayerMasks();
         this.movementSpeed = 3f;
-        this.bouncingSpeed = 5f;
+        this.bouncingSpeed = 4f;
         this.currentFloor = 0;
         this.currentTrampoline = null;
         SwitchToGrounded();

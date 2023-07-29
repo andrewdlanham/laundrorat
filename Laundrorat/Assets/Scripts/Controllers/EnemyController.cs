@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : CharacterController
+public class EnemyController : Controller
 {
 
     private PlayerController player;
@@ -13,12 +13,13 @@ public class EnemyController : CharacterController
         player = GameObject.Find("Player").GetComponent<PlayerController>();
         
         this.movementSpeed = 1.5f;
-        this.bouncingSpeed = 5f;
+        this.bouncingSpeed = 4f;
         this.currentHorizontalDirection = Vector2.left;
         this.currentTrampoline = null;
         SwitchToGrounded();
         
     }
+
 
     void Update() {
         HandleEnemyMovement();

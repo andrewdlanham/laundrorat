@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
+    public static GameManager instance;
+
     public Collectable flashingCollectable;
 
 
@@ -19,9 +21,24 @@ public class GameManager : MonoBehaviour
     private EnemyManager enemyManager;
 
     void Awake() {
-        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+
+        if (instance == null) {
+            instance = this;
+        } else {
+            Destroy(gameObject);
+            return;
+        }
+
+        DontDestroyOnLoad(gameObject);
+
+        SetPlayerReference();
         SetManagerReferences();
     }
+
+    private void SetPlayerReference() {
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+    }
+    
 
     private void SetManagerReferences() {
         collectableManager = GameObject.Find("CollectableManager").GetComponent<CollectableManager>();
@@ -37,6 +54,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void TriggerDeathSequence() {
+        
         Debug.Log("TriggerDeathSequence()");
         livesManager.LoseALife();
         if (livesManager.numLives < 1) {
@@ -72,5 +90,9 @@ public class GameManager : MonoBehaviour
         playerController.enabled = false;
         timerManager.enabled = false;
         enemyManager.DisableAllEnemies();
+    }
+
+    public void TestLoadNextLevel() {
+        SceneManager.LoadScene("Level2");
     }
 }

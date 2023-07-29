@@ -6,7 +6,7 @@ using TMPro;
 
 public class TimerManager : MonoBehaviour
 {
-    
+    public static TimerManager instance;
     private TextMeshProUGUI timerText;
 
 
@@ -16,8 +16,15 @@ public class TimerManager : MonoBehaviour
     private bool timeIsUp;
 
     void Awake() {
+        if (instance == null) {
+            instance = this;
+        } else {
+            Destroy(gameObject);
+            return;
+        }
         timerText = GameObject.Find("TimerText").GetComponent<TextMeshProUGUI>();
         timeIsUp = false;
+        DontDestroyOnLoad(gameObject);
     }
 
     void Start()

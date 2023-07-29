@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+public class Controller : MonoBehaviour
 {
     // LayerMasks
     public static LayerMask jumpPointMask;
@@ -27,7 +27,7 @@ public class CharacterController : MonoBehaviour
     // Component References
     public Animator animator;
     public new SpriteRenderer renderer;
-    public BoxCollider2D collider;
+    public new BoxCollider2D collider;
 
     protected void SetComponentReferences() {
         this.animator = GetComponent<Animator>();

@@ -6,7 +6,7 @@ using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
-
+    public static ScoreManager instance;
     [SerializeField] GameObject scorePopupPrefab;
 
     private TextMeshProUGUI scoreText;
@@ -14,11 +14,18 @@ public class ScoreManager : MonoBehaviour
     private int currentScore;
 
     void Awake() {
+        if (instance == null) {
+            instance = this;
+        } else {
+            Destroy(gameObject);
+            return;
+        }
         scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         highScoreText = GameObject.Find("HighScoreText").GetComponent<TextMeshProUGUI>();
         currentScore = PlayerPrefs.GetInt("Score");
         UpdateScoreText();
         UpdateHighScoreText();
+        DontDestroyOnLoad(gameObject);
     }
 
     
