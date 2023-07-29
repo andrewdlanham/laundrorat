@@ -24,18 +24,21 @@ public class Collectable : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other) {
         Debug.Log("Collectable triggered");
-        string scoreText = numPointsWorth.ToString();
-
-
-        PlayerController player = GameObject.Find("Player").GetComponent<PlayerController>();
-
-        if (matchingCollectable == player.lastCollectable) {
-            numPointsWorth *= 2;
-            scoreText += " x 2";
-        }
-
+        PlayCoinSound();
 
         GameManager gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        PlayerController player = GameObject.Find("Player").GetComponent<PlayerController>();
+
+        string scoreText = numPointsWorth.ToString();
+        int scoreMultiplier = 1;
+
+        if (matchingCollectable == player.lastCollectable) {
+            scoreMultiplier = gameManager.scoreMultiplier;
+            numPointsWorth *= scoreMultiplier;
+            scoreText += " x " + scoreMultiplier.ToString();
+            gameManager.scoreMultiplier++;
+        }
+        
         if (gameManager.flashingCollectable != null) {
             gameManager.flashingCollectable.StopFlashing();
         }
@@ -69,6 +72,10 @@ public class Collectable : MonoBehaviour
         Debug.Log("StopFlashing()");
         StopCoroutine(flashingCoroutine);
         renderer.enabled = true;
+    }
+
+    private void PlayCoinSound() {
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().PlaySound("CoinSound");
     }
 
 }

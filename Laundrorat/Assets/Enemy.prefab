@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: b8ca20b9ed939a04a8718f11dac1df72, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a3c37c93a031e9748b05dfd6bec76491, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -98,6 +98,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df3f7c65d41b9064f8d59f02bd8c131c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ceilingMask:
+    serializedVersion: 2
+    m_Bits: 0
+  trampolineMask:
+    serializedVersion: 2
+    m_Bits: 0
+  wallMask:
+    serializedVersion: 2
+    m_Bits: 0
+  exitPointMask:
+    serializedVersion: 2
+    m_Bits: 0
   movementSpeed: 0
   bouncingSpeed: 0
   isGrounded: 0
@@ -108,6 +120,7 @@ MonoBehaviour:
   currentTrampoline: {fileID: 0}
   animator: {fileID: 0}
   renderer: {fileID: 0}
+  collider: {fileID: 0}
 --- !u!61 &4916963271096259897
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -163,6 +163,14 @@ public class Controller : MonoBehaviour
         return trampoline;
     }
 
+    protected void FlipSpriteIfNeeded() {
+        if (currentHorizontalDirection.x > 0) {
+            renderer.flipX = false;
+        } else if (currentHorizontalDirection.x < 0) {
+            renderer.flipX = true;
+        }
+    }
+
     
 
     

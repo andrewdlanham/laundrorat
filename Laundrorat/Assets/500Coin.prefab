@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5667567737524728434}
   - component: {fileID: 5667567737524728439}
   m_Layer: 0
-  m_Name: 300Coin
+  m_Name: 500Coin
   m_TagString: Collectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 5667567737524728432}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0}
+  m_LocalScale: {x: 0.47, y: 0.47, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3723c5d6f96e85b4d895542d3996612e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3ee24df96c5d4ea4aa0dcd60ed5243e8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20cd3bc08d5457741bef385770f162dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numPointsWorth: 300
+  numPointsWorth: 500
   collectableCollider: {fileID: 0}
   scoreMultiplier: 0
   matchingCollectable: {fileID: 0}

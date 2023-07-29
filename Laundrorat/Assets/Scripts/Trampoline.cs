@@ -44,6 +44,7 @@ public class Trampoline : MonoBehaviour
 
     public void RegisterBounce() {
         Debug.Log("RegisterBounce()");
+        PlayBounceSound();
         numBouncesLeft--;
         if (numBouncesLeft == -1) {
             BreakTrampoline();
@@ -55,6 +56,11 @@ public class Trampoline : MonoBehaviour
     public void RefreshTrampoline() {
         numBouncesLeft = 3;
         UpdateTrampolineColor();
+    }
+
+    private void PlayBounceSound() {
+        Debug.Log("PlayBounceSound()");
+        GameObject.Find("AudioManager").GetComponent<AudioManager>().PlaySound("TrampolineBounce");
     }
 
 

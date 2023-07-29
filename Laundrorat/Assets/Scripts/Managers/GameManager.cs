@@ -20,10 +20,13 @@ public class GameManager : MonoBehaviour
     private TimerManager timerManager;
     private EnemyManager enemyManager;
 
+    public int scoreMultiplier;
+
     void Awake() {
 
         SetPlayerReference();
         SetManagerReferences();
+        scoreMultiplier = 2;
 
         if (instance == null) {
             instance = this;

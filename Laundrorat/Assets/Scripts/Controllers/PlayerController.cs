@@ -86,13 +86,7 @@ public class PlayerController : Controller
         GameObject.Find("GameManager").GetComponent<GameManager>().TriggerDeathSequence();
     }
 
-    private void FlipSpriteIfNeeded() {
-        if (horizontalInput > 0) {
-            renderer.flipX = false;
-        } else if (horizontalInput < 0) {
-            renderer.flipX = true;
-        }
-    }
+    
 
     private bool IsHoldingDirection() {
         return horizontalInput != 0;

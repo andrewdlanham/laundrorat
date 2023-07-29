@@ -23,6 +23,7 @@ public class EnemyController : Controller
 
     void Update() {
         HandleEnemyMovement();
+        FlipSpriteIfNeeded();
     }
 
     private void HandleEnemyMovement() {
