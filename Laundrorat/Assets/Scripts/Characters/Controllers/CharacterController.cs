@@ -19,9 +19,16 @@ public class CharacterController : MonoBehaviour
 
     public Trampoline currentTrampoline;
 
+    // Component References
     public Animator animator;
-
     public SpriteRenderer renderer;
+    public BoxCollider2D collider;
+
+    protected void SetComponentReferences() {
+        this.animator = GetComponent<Animator>();
+        this.renderer = GetComponent<SpriteRenderer>();
+        this.collider = GetComponent<BoxCollider2D>();
+    }
 
     protected bool IsGrounded() {
         return this.isGrounded;
@@ -81,6 +88,14 @@ public class CharacterController : MonoBehaviour
         } else {
             this.currentVerticalDirection = Vector2.up;
         }
+    }
+
+    protected Vector2 GetTopOfCollider() {
+        return (Vector2) this.gameObject.transform.position + new Vector2(0f, this.collider.bounds.extents.y);
+    }
+
+    protected Vector2 GetBottomOfCollider() {
+        return (Vector2) this.gameObject.transform.position +-new Vector2(0f, this.collider.bounds.extents.y);
     }
 
     private IEnumerator PlayJumpAnimation() {

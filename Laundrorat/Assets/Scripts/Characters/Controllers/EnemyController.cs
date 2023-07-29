@@ -9,12 +9,13 @@ public class EnemyController : CharacterController
 
     void Awake() {
         player = GameObject.Find("Player").GetComponent<PlayerController>();
-        SwitchToGrounded();
+        
         this.movementSpeed = 2f;
         this.bouncingSpeed = 5f;
         this.currentHorizontalDirection = Vector2.left;
         this.currentTrampoline = null;
-        this.animator = GetComponent<Animator>();
+        SwitchToGrounded();
+        
     }
 
     void Update() {
@@ -63,7 +64,7 @@ public class EnemyController : CharacterController
         if (player.isGrounded) {
             return player.currentFloor;
         }
-        // TODO: Calculate random exit floor for other cases
+        // TODO: Add more rules for calculating exit floor
         return 0;
     }
 

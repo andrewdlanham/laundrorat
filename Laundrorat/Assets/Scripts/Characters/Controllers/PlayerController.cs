@@ -11,17 +11,14 @@ public class PlayerController : CharacterController
     public bool canDetectInput;
 
     void Awake() {
-        Debug.Log("Player awake");
+        SetComponentReferences();
         this.movementSpeed = 3f;
         this.bouncingSpeed = 5f;
         this.currentFloor = 0;
         this.currentTrampoline = null;
-        this.animator = GetComponent<Animator>();
-        this.renderer = GetComponent<SpriteRenderer>();
         SwitchToGrounded();
-        Debug.Log("End of Player awake");
         jumpPointMask = 1 << LayerMask.NameToLayer("JumpPoint");
-        canDetectInput = true;
+        EnablePlayerInput();
     }
 
     void Update()
@@ -52,7 +49,7 @@ public class PlayerController : CharacterController
     private void HandlePlayerMovement() {
         if (IsBouncing()) {
             if (CharacterMovement.IsBouncingIntoTrampoline(this)) {
-                CharacterMovement.HandleTrampolineBounce(this);
+                HandleTrampolineBounce();
                 ReverseVerticalDirection();
                 return;
             } 
@@ -79,9 +76,7 @@ public class PlayerController : CharacterController
         if (IsGrounded()) {
             if (CharacterMovement.CanEnterBouncing(this)) {
                 // TODO: Remove abilty to input for a little while
-                Debug.Log("Before");
                 EnterBouncing();
-                Debug.Log("After");
                 StartCoroutine(TestRoutine());
                 return;
             }
@@ -90,7 +85,6 @@ public class PlayerController : CharacterController
     }
 
     void OnCollisionEnter2D (Collision2D collision) {
-        Debug.Log("Player collided with enemy!");
         GameObject.Find("GameManager").GetComponent<GameManager>().TriggerDeathSequence();
     }
 
@@ -106,18 +100,27 @@ public class PlayerController : CharacterController
         return horizontalInput != 0;
     }
 
-    private void ResetHorizontalInputAndMovement() {
-        horizontalInput = 0;
-        currentHorizontalDirection = new Vector2(0,0);
-    }
-
     IEnumerator TestRoutine() {
+        DisablePlayerInput();
         horizontalInput = 0;
-        canDetectInput = false;
         currentHorizontalDirection = new Vector2(0,0);
         Debug.Log("TestRoutine");
         yield return new WaitForSeconds(0.3f);
+        EnablePlayerInput();
+    }
+
+    private void HandleTrampolineBounce() {
+        Trampoline trampoline = CharacterMovement.GetTrampoline(this);
+        trampoline.RegisterBounce();
+        currentTrampoline = trampoline;
+    }
+
+    private void EnablePlayerInput() {
         canDetectInput = true;
+    }
+
+    private void DisablePlayerInput() {
+        canDetectInput = false;
     }
 
 }

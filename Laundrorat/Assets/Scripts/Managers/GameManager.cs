@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 
 
     private PlayerController playerController;
+
+    // Manager References
     private CollectableManager collectableManager;
     private LivesManager livesManager;
     private AudioManager audioManager;
@@ -18,6 +20,10 @@ public class GameManager : MonoBehaviour
 
     void Awake() {
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
+        SetManagerReferences();
+    }
+
+    private void SetManagerReferences() {
         collectableManager = GameObject.Find("CollectableManager").GetComponent<CollectableManager>();
         livesManager = GameObject.Find("LivesManager").GetComponent<LivesManager>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
@@ -26,20 +32,12 @@ public class GameManager : MonoBehaviour
     }
 
     public void FinishLevel() {
-        DisableCollectableManager();
-        DisablePlayerController();
-    }
-
-    private void DisablePlayerController() {
         playerController.enabled = false;
-    }
-
-    private void DisableCollectableManager() {
         collectableManager.enabled = false;
     }
 
     public void TriggerDeathSequence() {
-        Debug.Log("DEATH");
+        Debug.Log("TriggerDeathSequence()");
         livesManager.LoseALife();
         if (livesManager.numLives < 1) {
             StartCoroutine(GameOverCutscene());
@@ -54,7 +52,7 @@ public class GameManager : MonoBehaviour
     }
 
     IEnumerator GameOverCutscene() {
-        Debug.Log("GameOverCutscene");
+        Debug.Log("GameOverCutscene()");
         FreezeLevel();
         audioManager.PlaySound("PlayerDeath");
         yield return new WaitForSeconds(3f);
@@ -62,7 +60,7 @@ public class GameManager : MonoBehaviour
     }
 
     IEnumerator DeathCutscene() {
-        Debug.Log("DeathCutscene");
+        Debug.Log("DeathCutscene()");
         FreezeLevel();
         audioManager.PlaySound("PlayerDeath");
         yield return new WaitForSeconds(3f);
@@ -70,7 +68,7 @@ public class GameManager : MonoBehaviour
     }
 
     private void FreezeLevel() {
-        Debug.Log("FreezeLevel");
+        Debug.Log("FreezeLevel()");
         playerController.enabled = false;
         timerManager.enabled = false;
         enemyManager.DisableAllEnemies();
