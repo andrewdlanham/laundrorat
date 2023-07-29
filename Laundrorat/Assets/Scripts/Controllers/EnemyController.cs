@@ -8,9 +8,11 @@ public class EnemyController : CharacterController
     private PlayerController player;
 
     void Awake() {
+        SetComponentReferences();
+        SetLayerMasks();
         player = GameObject.Find("Player").GetComponent<PlayerController>();
         
-        this.movementSpeed = 2f;
+        this.movementSpeed = 1.5f;
         this.bouncingSpeed = 5f;
         this.currentHorizontalDirection = Vector2.left;
         this.currentTrampoline = null;
@@ -24,8 +26,9 @@ public class EnemyController : CharacterController
 
     private void HandleEnemyMovement() {
         if (IsBouncing()) {
-            if (CharacterMovement.ShouldReverseVerticalDirection(this)) {
+            if (IsBouncingIntoTrampoline() || IsBouncingIntoCeiling()) {
                 ReverseVerticalDirection();
+                return;
             }
 
             if (PlayerIsToRight()) {
@@ -41,7 +44,7 @@ public class EnemyController : CharacterController
         }
 
         if (IsGrounded()) {
-            if (CharacterMovement.CanEnterBouncing(this)) {
+            if (CanEnterBouncing()) {
                 EnterBouncing();
             }
             HandleHorizontalMovement();
@@ -49,8 +52,8 @@ public class EnemyController : CharacterController
     }
 
     private bool EnemyShouldExit() {
-        if (CharacterMovement.CanExitBouncing(this)) {
-            GameObject exitPointObject = CharacterMovement.GetExitPointObject(this);
+        if (CanExitBouncing()) {
+            GameObject exitPointObject = GetExitPointObject();
             if (exitPointObject == null) return false;
             int exitFloor = exitPointObject.GetComponent<ExitPoint>().floorNumber;
             return exitFloor == GetExitFloor();

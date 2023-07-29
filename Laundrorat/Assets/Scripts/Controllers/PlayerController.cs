@@ -12,19 +12,20 @@ public class PlayerController : CharacterController
 
     void Awake() {
         SetComponentReferences();
+        SetLayerMasks();
         this.movementSpeed = 3f;
         this.bouncingSpeed = 5f;
         this.currentFloor = 0;
         this.currentTrampoline = null;
         SwitchToGrounded();
-        jumpPointMask = 1 << LayerMask.NameToLayer("JumpPoint");
+        
         EnablePlayerInput();
     }
 
     void Update()
     {   
         if (canDetectInput) {
-            UpdateHorizontalInput();
+            UpdateInput();
         }
         
         UpdateHorizontalDirection();
@@ -32,9 +33,7 @@ public class PlayerController : CharacterController
         HandlePlayerMovement();
     }
 
-    private void UpdateHorizontalInput() {
-        horizontalInput = Input.GetAxis("Horizontal");
-    }
+    
 
     private void UpdateHorizontalDirection() {
         if (horizontalInput > 0) {
@@ -48,23 +47,23 @@ public class PlayerController : CharacterController
 
     private void HandlePlayerMovement() {
         if (IsBouncing()) {
-            if (CharacterMovement.IsBouncingIntoTrampoline(this)) {
+            if (IsBouncingIntoTrampoline()) {
                 HandleTrampolineBounce();
                 ReverseVerticalDirection();
                 return;
             } 
-            if (CharacterMovement.IsBouncingIntoCeiling(this)) {
+            if (IsBouncingIntoCeiling()) {
                 ReverseVerticalDirection();
                 return;
             }
             if (IsHoldingDirection()) {
-                if (CharacterMovement.CanBounceOffWall(this)) {
+                if (CanBounceOffWall()) {
                     Debug.Log("currentHorizontalDirection: " + currentHorizontalDirection);
                     Debug.Log("Bounced off wall");
                     this.currentVerticalDirection = Vector2.down;
                     return;
                 }
-                if (CharacterMovement.CanExitBouncing(this)) {
+                if (CanExitBouncing()) {
                     ExitBouncing();
                     return;
                 }
@@ -74,10 +73,9 @@ public class PlayerController : CharacterController
         }
 
         if (IsGrounded()) {
-            if (CharacterMovement.CanEnterBouncing(this)) {
-                // TODO: Remove abilty to input for a little while
+            if (CanEnterBouncing()) {
                 EnterBouncing();
-                StartCoroutine(TestRoutine());
+                StartCoroutine(JumpInputBuffer());
                 return;
             }
             HandleHorizontalMovement();
@@ -100,19 +98,28 @@ public class PlayerController : CharacterController
         return horizontalInput != 0;
     }
 
-    IEnumerator TestRoutine() {
-        DisablePlayerInput();
-        horizontalInput = 0;
-        currentHorizontalDirection = new Vector2(0,0);
-        Debug.Log("TestRoutine");
-        yield return new WaitForSeconds(0.3f);
-        EnablePlayerInput();
-    }
+    
 
     private void HandleTrampolineBounce() {
-        Trampoline trampoline = CharacterMovement.GetTrampoline(this);
+        Trampoline trampoline = GetTrampoline();
         trampoline.RegisterBounce();
         currentTrampoline = trampoline;
+    }
+
+    
+
+    private bool CanBounceOffWall() {
+        if (this.currentVerticalDirection == Vector2.down) return false;
+        if (this.horizontalInput == 0 ) {
+            Debug.Log("Cannot bounce without input");
+            return false;
+        }
+        return Physics.Raycast(this.gameObject.transform.position, this.currentHorizontalDirection, out RaycastHit hit, 2.5f, wallMask);
+    }
+
+    #region Player Input
+    private void UpdateInput() {
+        horizontalInput = Input.GetAxis("Horizontal");
     }
 
     private void EnablePlayerInput() {
@@ -123,4 +130,15 @@ public class PlayerController : CharacterController
         canDetectInput = false;
     }
 
+    IEnumerator JumpInputBuffer() {
+        DisablePlayerInput();
+        horizontalInput = 0;
+        currentHorizontalDirection = new Vector2(0,0);
+        Debug.Log("JumpInputBuffer()");
+        yield return new WaitForSeconds(0.3f);
+        EnablePlayerInput();
+    }
+
+
+    #endregion
 }

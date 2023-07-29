@@ -14,7 +14,7 @@ public class Collectable : MonoBehaviour
 
     private Coroutine flashingCoroutine;
 
-    private SpriteRenderer renderer;
+    private new SpriteRenderer renderer;
 
     void Awake() {
         collectableCollider = GetComponent<BoxCollider2D>();

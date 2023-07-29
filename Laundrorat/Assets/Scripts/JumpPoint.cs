@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExitPoint : MonoBehaviour
+public class JumpPoint : MonoBehaviour
 {
-    [SerializeField] public int floorNumber;
     private new SpriteRenderer renderer;
 
     void Awake() {
         renderer = GetComponent<SpriteRenderer>();
-        HideExitPointSprite();
+        HideJumpPointSprite();
     }
 
-    private void HideExitPointSprite() {
+    private void HideJumpPointSprite() {
         renderer.enabled = false;
     }
 }
