@@ -27,8 +27,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5667567737524728432}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.0844, y: -1.707, z: 0}
-  m_LocalScale: {x: 0.6221042, y: 0.58399564, z: 0}
+  m_LocalPosition: {x: 1.3331, y: -1.9405, z: 0}
+  m_LocalScale: {x: 0.47870845, y: 0.44938394, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: eb24cec9129f7874aab00d88018851e8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: df49446734ad03848a681d334388e648, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -100,6 +100,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numPointsWorth: 100
   collectableCollider: {fileID: 0}
+  scoreMultiplier: 0
+  matchingCollectable: {fileID: 0}
 --- !u!61 &5667567737524728439
 BoxCollider2D:
   m_ObjectHideFlags: 0

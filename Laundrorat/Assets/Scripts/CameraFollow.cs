@@ -10,7 +10,7 @@ public class CameraFollow : MonoBehaviour
 
     void Awake() {
         player = GameObject.Find("Player").GetComponent<PlayerController>();
-        cameraOffset = new Vector3(0,0,-10);
+        cameraOffset = new Vector3(0,4.5f,-10);
     }
 
     void LateUpdate() {

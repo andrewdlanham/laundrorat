@@ -24,12 +24,14 @@ public class Collectable : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other) {
         Debug.Log("Collectable triggered");
+        string scoreText = numPointsWorth.ToString();
+
 
         PlayerController player = GameObject.Find("Player").GetComponent<PlayerController>();
 
         if (matchingCollectable == player.lastCollectable) {
-            Debug.Log("BONUS POINTS");
             numPointsWorth *= 2;
+            scoreText += " x 2";
         }
 
 
@@ -46,7 +48,7 @@ public class Collectable : MonoBehaviour
         player.lastCollectable = this;
         ScoreManager scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
         scoreManager.AddPointsToScore(numPointsWorth);
-        scoreManager.ShowScorePopup(this.gameObject, numPointsWorth);
+        scoreManager.ShowScorePopup(this.gameObject, scoreText);
         GameObject.Find("CollectableManager").GetComponent<CollectableManager>().RemoveCollectableObject(this.gameObject);
         this.gameObject.SetActive(false);
     }

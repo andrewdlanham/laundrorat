@@ -52,14 +52,14 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    IEnumerator ScorePopupAnimation(GameObject obj, int numPoints) {
+    IEnumerator ScorePopupAnimation(GameObject obj, string scoreText) {
         GameObject newPopup = Instantiate(scorePopupPrefab, obj.transform.position, Quaternion.identity);
-        newPopup.GetComponent<TextMeshPro>().text = numPoints.ToString();
+        newPopup.GetComponent<TextMeshPro>().text = scoreText;
         yield return new WaitForSeconds(2f);
         Destroy(newPopup);
     }
 
-    public void ShowScorePopup(GameObject obj, int numPoints) {
-        StartCoroutine(ScorePopupAnimation(obj, numPoints));
+    public void ShowScorePopup(GameObject obj, string scoreText) {
+        StartCoroutine(ScorePopupAnimation(obj, scoreText));
     }
 }

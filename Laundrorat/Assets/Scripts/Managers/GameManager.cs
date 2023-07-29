@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour
 
     void Awake() {
 
+        SetPlayerReference();
+        SetManagerReferences();
+
         if (instance == null) {
             instance = this;
         } else {
@@ -31,8 +34,7 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        SetPlayerReference();
-        SetManagerReferences();
+        
     }
 
     private void SetPlayerReference() {
