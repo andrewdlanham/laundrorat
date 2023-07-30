@@ -59,7 +59,8 @@ public class GameManager : MonoBehaviour
     }
 
     public void TriggerDeathSequence() {
-        
+        TestLoadNextLevel();
+        return;
         Debug.Log("TriggerDeathSequence()");
         livesManager.LoseALife();
         if (livesManager.numLives < 1) {

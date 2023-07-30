@@ -13,7 +13,7 @@ public class EnemyController : Controller
         player = GameObject.Find("Player").GetComponent<PlayerController>();
         
         this.movementSpeed = 1.5f;
-        this.bouncingSpeed = 4f;
+        this.bouncingSpeed = 3f;
         this.currentHorizontalDirection = Vector2.left;
         this.currentTrampoline = null;
         SwitchToGrounded();

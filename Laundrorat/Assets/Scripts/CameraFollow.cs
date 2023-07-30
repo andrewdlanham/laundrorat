@@ -16,6 +16,17 @@ public class CameraFollow : MonoBehaviour
     void LateUpdate() {
         Vector3 newPosition = cameraOffset;
         newPosition.x += player.gameObject.transform.position.x;
-        transform.position = newPosition;
+        //Debug.Log("newPosition: " + newPosition);
+        if (IsInBounds(newPosition)) {
+            transform.position = newPosition;
+        }
+    }
+
+    private bool IsInBounds(Vector3 position) {
+        
+        if (position.x < 1 || position.x > 14) {
+            return false;
+        }
+        return true;
     }
 }
