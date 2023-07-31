@@ -36,4 +36,18 @@ public class EnemyManager : MonoBehaviour
             enemyObject.GetComponent<EnemyController>().enabled = false;
         }
     }
+
+    public void EnableAllEnemies() {
+        foreach (GameObject enemyObject in enemyObjectsList) {
+            enemyObject.GetComponent<EnemyController>().enabled = true;
+        }
+    }
+
+    public void SpeedUpAllEnemies() {
+        Debug.Log("SpeedUpAllEnemies()");
+        foreach (GameObject enemyObject in enemyObjectsList) {
+            enemyObject.GetComponent<EnemyController>().movementSpeed += 1.5f;
+            enemyObject.GetComponent<EnemyController>().bouncingSpeed += 1;
+        }
+    }
 }

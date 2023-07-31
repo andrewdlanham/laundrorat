@@ -22,7 +22,7 @@ public class TimerManager : MonoBehaviour
             return;
         }
 
-        InitializeTimer(60);
+        InitializeTimer(5);
         DontDestroyOnLoad(gameObject);
     }
 
@@ -31,7 +31,10 @@ public class TimerManager : MonoBehaviour
         if (!timeIsUp) {
             currentTime -= 1 * Time.deltaTime;
             int roundedTime = Mathf.CeilToInt(currentTime);
-            if (roundedTime == 0) timeIsUp = true;
+            if (roundedTime == 0) {
+                timeIsUp = true;
+                GameObject.Find("GameManager").GetComponent<GameManager>().HurryUp();
+            }
             timerText.text = roundedTime.ToString();
         }
     }
@@ -41,4 +44,6 @@ public class TimerManager : MonoBehaviour
         currentTime = numSeconds;
         timeIsUp = false;
     }
+
+    
 }

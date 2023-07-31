@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
 
+    
     public static GameManager instance;
 
     public Collectable flashingCollectable;
-
 
     private PlayerController playerController;
 
@@ -19,6 +20,8 @@ public class GameManager : MonoBehaviour
     private AudioManager audioManager;
     private TimerManager timerManager;
     private EnemyManager enemyManager;
+
+    private UIManager uiManager;
 
     public int scoreMultiplier;
 
@@ -36,8 +39,10 @@ public class GameManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
+    }
 
-        
+    void Start() {
+        StartCoroutine(StageNumCutscene(1));
     }
 
     private void SetPlayerReference() {
@@ -51,6 +56,7 @@ public class GameManager : MonoBehaviour
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         timerManager = GameObject.Find("TimerManager").GetComponent<TimerManager>();
         enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemyManager>();
+        uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
     }
 
     public void FinishLevel() {
@@ -98,7 +104,40 @@ public class GameManager : MonoBehaviour
         enemyManager.DisableAllEnemies();
     }
 
+    private void UnfreezeLevel() {
+        Debug.Log("UnfreezeLevel()");
+        playerController.enabled = true;
+        timerManager.enabled = true;
+        enemyManager.EnableAllEnemies();
+    }
+
     public void TestLoadNextLevel() {
         SceneManager.LoadScene("Level2");
+    }
+
+    public void HurryUp() {
+        Debug.Log("HurryUp()");
+        StartCoroutine(HurryUpCutscene());
+    }
+
+    IEnumerator HurryUpCutscene() {
+        Debug.Log("HurryUpCutscene()");
+        FreezeLevel();
+        uiManager.ShowHurryUpText();
+        audioManager.PlaySound("HurryUp");
+        yield return new WaitForSeconds(2f);
+        enemyManager.SpeedUpAllEnemies();
+        uiManager.HideHurryUpText();
+        UnfreezeLevel();
+    }
+
+    IEnumerator StageNumCutscene(int stageNum) {
+        Debug.Log("StageNumCutscene()");
+        FreezeLevel();
+        uiManager.ShowStageNum(stageNum);
+        yield return new WaitForSeconds(2f);
+        uiManager.HideStageNum();
+        yield return new WaitForSeconds(1f);
+        UnfreezeLevel();
     }
 }
