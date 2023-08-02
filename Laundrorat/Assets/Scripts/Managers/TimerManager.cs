@@ -21,8 +21,6 @@ public class TimerManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
-        InitializeTimer(5);
         DontDestroyOnLoad(gameObject);
     }
 
@@ -39,7 +37,7 @@ public class TimerManager : MonoBehaviour
         }
     }
 
-    public void InitializeTimer(int numSeconds) {
+    public void InitializeTimer(float numSeconds) {
         timerText = GameObject.Find("TimerText").GetComponent<TextMeshProUGUI>();
         currentTime = numSeconds;
         timeIsUp = false;

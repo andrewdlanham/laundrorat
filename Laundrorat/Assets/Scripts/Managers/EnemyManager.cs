@@ -19,16 +19,19 @@ public class EnemyManager : MonoBehaviour
             return;
         }
 
+        DontDestroyOnLoad(gameObject);
+    }
 
+    public void InitializeEnemyObjectsList() {
+
+        Debug.Log("InitializeEnemyObjectsArray()");
+
+        enemyObjectsList = new List<GameObject>();
+        
         GameObject[] enemyObjectsArray = GameObject.FindGameObjectsWithTag("Enemy");
         foreach (GameObject obj in enemyObjectsArray) {
             enemyObjectsList.Add(obj);
         }
-        DontDestroyOnLoad(gameObject);
-    }
-
-    void Start() {
-        Debug.Log("EnemyManager Start()");
     }
 
     public void DisableAllEnemies() {
@@ -48,6 +51,14 @@ public class EnemyManager : MonoBehaviour
         foreach (GameObject enemyObject in enemyObjectsList) {
             enemyObject.GetComponent<EnemyController>().movementSpeed += 1.5f;
             enemyObject.GetComponent<EnemyController>().bouncingSpeed += 1;
+        }
+    }
+
+    public void SetSpeedAllEnemies(float movementSpeed, float bouncingSpeed) {
+        Debug.Log("SetSpeedAllEnemies()");
+        foreach (GameObject enemyObject in enemyObjectsList) {
+            enemyObject.GetComponent<EnemyController>().movementSpeed = movementSpeed;
+            enemyObject.GetComponent<EnemyController>().bouncingSpeed = bouncingSpeed;
         }
     }
 }

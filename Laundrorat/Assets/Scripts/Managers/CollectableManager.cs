@@ -8,13 +8,22 @@ public class CollectableManager : MonoBehaviour
 
     [SerializeField] List<GameObject> collectableObjectsList;
 
+    public bool triggerStageClear;
+
     void Awake() {
+
         if (instance == null) {
             instance = this;
         } else {
             Destroy(gameObject);
             return;
         }
+
+        DontDestroyOnLoad(gameObject);
+        
+    }
+    
+    public void InitializeCollectableObjectsList() {
         GameObject[] collectableObjectsArray = GameObject.FindGameObjectsWithTag("Collectable");
         foreach (GameObject obj in collectableObjectsArray) {
             collectableObjectsList.Add(obj);
@@ -22,8 +31,9 @@ public class CollectableManager : MonoBehaviour
     }
 
     void Update() {
-        if (NoCollectablesLeft()) {
-            GameObject.Find("GameManager").GetComponent<GameManager>().FinishLevel();
+        if (triggerStageClear) {
+            GameObject.Find("GameManager").GetComponent<GameManager>().StageClear();
+            triggerStageClear = false;
         }
     }
 
@@ -31,7 +41,7 @@ public class CollectableManager : MonoBehaviour
         collectableObjectsList.Remove(collectableObject);
     }
 
-    private bool NoCollectablesLeft() {
+    public bool NoCollectablesLeft() {
         return collectableObjectsList.Count == 0;
     }
 

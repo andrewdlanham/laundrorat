@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     private EnemyManager enemyManager;
 
     private UIManager uiManager;
+    private StageManager stageManager;
 
     public int scoreMultiplier;
 
@@ -42,7 +43,8 @@ public class GameManager : MonoBehaviour
     }
 
     void Start() {
-        StartCoroutine(StageNumCutscene(1));
+        StartCoroutine(StageNumCutscene(stageManager.stageNum));
+        stageManager.SetStageVariables();
     }
 
     private void SetPlayerReference() {
@@ -57,16 +59,14 @@ public class GameManager : MonoBehaviour
         timerManager = GameObject.Find("TimerManager").GetComponent<TimerManager>();
         enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemyManager>();
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
     }
 
-    public void FinishLevel() {
-        playerController.enabled = false;
-        collectableManager.enabled = false;
+    public void StageClear() {
+        StartCoroutine(StageClearCutscene());
     }
 
     public void TriggerDeathSequence() {
-        TestLoadNextLevel();
-        return;
         Debug.Log("TriggerDeathSequence()");
         livesManager.LoseALife();
         if (livesManager.numLives < 1) {
@@ -79,22 +79,6 @@ public class GameManager : MonoBehaviour
     private void ReloadCurrentScene() {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
-    }
-
-    IEnumerator GameOverCutscene() {
-        Debug.Log("GameOverCutscene()");
-        FreezeLevel();
-        audioManager.PlaySound("PlayerDeath");
-        yield return new WaitForSeconds(3f);
-        SceneManager.LoadScene("MainMenu");
-    }
-
-    IEnumerator DeathCutscene() {
-        Debug.Log("DeathCutscene()");
-        FreezeLevel();
-        audioManager.PlaySound("PlayerDeath");
-        yield return new WaitForSeconds(3f);
-        ReloadCurrentScene();
     }
 
     private void FreezeLevel() {
@@ -111,13 +95,27 @@ public class GameManager : MonoBehaviour
         enemyManager.EnableAllEnemies();
     }
 
-    public void TestLoadNextLevel() {
-        SceneManager.LoadScene("Level2");
-    }
-
     public void HurryUp() {
         Debug.Log("HurryUp()");
         StartCoroutine(HurryUpCutscene());
+    }
+
+    private void ProceedToNextStage() {
+        Debug.Log("ProceedToNextStage()");
+        stageManager.LoadNextStage();
+        stageManager.SetStageVariables();
+        StartCoroutine(StageNumCutscene(stageManager.stageNum));
+    }
+
+    #region Cutscenes
+    IEnumerator StageNumCutscene(int stageNum) {
+        Debug.Log("StageNumCutscene()");
+        FreezeLevel();
+        uiManager.ShowStageNum(stageNum);
+        yield return new WaitForSeconds(2f);
+        uiManager.HideStageNum();
+        yield return new WaitForSeconds(1f);
+        UnfreezeLevel();
     }
 
     IEnumerator HurryUpCutscene() {
@@ -131,13 +129,32 @@ public class GameManager : MonoBehaviour
         UnfreezeLevel();
     }
 
-    IEnumerator StageNumCutscene(int stageNum) {
-        Debug.Log("StageNumCutscene()");
+    IEnumerator GameOverCutscene() {
+        Debug.Log("GameOverCutscene()");
         FreezeLevel();
-        uiManager.ShowStageNum(stageNum);
-        yield return new WaitForSeconds(2f);
-        uiManager.HideStageNum();
-        yield return new WaitForSeconds(1f);
+        audioManager.PlaySound("PlayerDeath");
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    IEnumerator DeathCutscene() {
+        Debug.Log("DeathCutscene()");
+        FreezeLevel();
+        audioManager.PlaySound("PlayerDeath");
+        yield return new WaitForSeconds(3f);
+        ReloadCurrentScene();
         UnfreezeLevel();
     }
+
+    IEnumerator StageClearCutscene() {
+        Debug.Log("StageClearCutscene()");
+        FreezeLevel();
+        yield return new WaitForSeconds(0.5f);
+        audioManager.PlaySound("StageClear");
+        uiManager.ShowStageClearedGO();
+        yield return new WaitForSeconds(2f);
+        uiManager.HideStageClearedGO();
+        ProceedToNextStage();
+    }
+    #endregion
 }

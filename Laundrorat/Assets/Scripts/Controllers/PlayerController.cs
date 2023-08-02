@@ -5,12 +5,26 @@ using UnityEngine;
 public class PlayerController : Controller
 {
 
+    
+    public static PlayerController instance;
+    
     public float horizontalInput;
     public Collectable lastCollectable;
 
     public bool canDetectInput;
 
     void Awake() {
+
+        if (instance == null) {
+            instance = this;
+        } else {
+            Destroy(gameObject);
+            return;
+        }
+
+        DontDestroyOnLoad(gameObject);
+
+
         SetComponentReferences();
         SetLayerMasks();
         this.movementSpeed = 3f;

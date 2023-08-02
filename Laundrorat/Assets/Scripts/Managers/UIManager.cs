@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject StageNumPanel;
     [SerializeField] private GameObject StageNumTextGO;
 
+    [SerializeField] private GameObject StageClearedGO;
     private TextMeshProUGUI StageNumText;
     
     void Awake() {
@@ -35,6 +36,14 @@ public class UIManager : MonoBehaviour
     public void HideStageNum() {
         StageNumPanel.SetActive(false);
         StageNumTextGO.SetActive(false);
+    }
+
+    public void ShowStageClearedGO() {
+        StageClearedGO.SetActive(true);
+    }
+
+    public void HideStageClearedGO() {
+        StageClearedGO.SetActive(false);
     }
 
 }

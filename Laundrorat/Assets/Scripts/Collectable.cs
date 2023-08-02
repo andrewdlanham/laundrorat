@@ -49,10 +49,17 @@ public class Collectable : MonoBehaviour
         }
 
         player.lastCollectable = this;
+
         ScoreManager scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
         scoreManager.AddPointsToScore(numPointsWorth);
         scoreManager.ShowScorePopup(this.gameObject, scoreText);
-        GameObject.Find("CollectableManager").GetComponent<CollectableManager>().RemoveCollectableObject(this.gameObject);
+
+        CollectableManager collectableManager = CollectableManager.instance;
+        collectableManager.RemoveCollectableObject(this.gameObject);
+        if (collectableManager.NoCollectablesLeft()) {
+            collectableManager.triggerStageClear = true;
+        }
+        
         this.gameObject.SetActive(false);
     }
 

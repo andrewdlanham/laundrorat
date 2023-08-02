@@ -8,7 +8,7 @@ public class MainMenuManager : MonoBehaviour
     public void LoadLevel1() {
         ResetLives();
         ResetScore();
-        SceneManager.LoadScene("TestScene");
+        SceneManager.LoadScene("Stage1.1");
     }
 
     private void ResetLives() {
