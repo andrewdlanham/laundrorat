@@ -103,7 +103,6 @@ public class GameManager : MonoBehaviour
     private void ProceedToNextStage() {
         Debug.Log("ProceedToNextStage()");
         stageManager.LoadNextStage();
-        stageManager.SetStageVariables();
         StartCoroutine(StageNumCutscene(stageManager.stageNum));
     }
 

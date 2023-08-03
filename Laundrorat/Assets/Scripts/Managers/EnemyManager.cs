@@ -24,7 +24,7 @@ public class EnemyManager : MonoBehaviour
 
     public void InitializeEnemyObjectsList() {
 
-        Debug.Log("InitializeEnemyObjectsArray()");
+        Debug.Log("InitializeEnemyObjectsList()");
 
         enemyObjectsList = new List<GameObject>();
         

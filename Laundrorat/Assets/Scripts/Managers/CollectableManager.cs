@@ -24,6 +24,7 @@ public class CollectableManager : MonoBehaviour
     }
     
     public void InitializeCollectableObjectsList() {
+        collectableObjectsList = new List<GameObject>();
         GameObject[] collectableObjectsArray = GameObject.FindGameObjectsWithTag("Collectable");
         foreach (GameObject obj in collectableObjectsArray) {
             collectableObjectsList.Add(obj);

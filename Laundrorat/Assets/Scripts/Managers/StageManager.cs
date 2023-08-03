@@ -21,9 +21,12 @@ public class StageManager : MonoBehaviour
     private TimerManager timerManager;
     private EnemyManager enemyManager;
     private CollectableManager collectableManager;
+
+    private PlayerController playerController;
     
     void Awake() {
-        Debug.Log("StageManager.cs");
+        Debug.Log("StageManager Awake()");
+        SetPlayerReference();
         SetManagerReferences();
         PopulateStageInfo();
         PopulateStageNames();
@@ -50,6 +53,10 @@ public class StageManager : MonoBehaviour
         enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemyManager>();
         //uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         
+    }
+
+    private void SetPlayerReference() {
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     private void PopulateStageInfo() {
@@ -93,18 +100,23 @@ public class StageManager : MonoBehaviour
         timerManager.InitializeTimer(stageInfo[stageNum][2]);
 
         enemyManager.SetSpeedAllEnemies(stageInfo[stageNum][0], stageInfo[stageNum][1]);
-        
 
-        // TODO: Reset player position
+        playerController.ResetPlayerPosition();
         GameManager.instance.scoreMultiplier = 2;
 
     }
 
     public void LoadNextStage() {
         Debug.Log("Loading " + stageNames[stageNamesIndex]);
+        StartCoroutine(LoadNextStageWithDelay());
+    }
+
+    private IEnumerator LoadNextStageWithDelay() {
         SceneManager.LoadScene(stageNames[stageNamesIndex]);
         stageNamesIndex++;
         stageNum++;
+        yield return new WaitForSeconds(3f);
+        SetStageVariables();
     }
     
 
