@@ -73,6 +73,8 @@ public class StageManager : MonoBehaviour
         stageInfo.Add(new float[3]{1.5f, 3f, 35f}); // Stage 1.4
         stageInfo.Add(new float[3]{1.5f, 3f, 35f}); // Stage 2.3
         stageInfo.Add(new float[3]{1.5f, 3f, 35f}); // Stage 2.4
+
+        stageInfo.Add(new float[3]{1.5f, 3f, 35f}); // All stages afterwards
     }
 
     private void PopulateStageNames() {
@@ -93,6 +95,7 @@ public class StageManager : MonoBehaviour
 
     public void SetStageVariables() {
         Debug.Log("SetStageVariables()");
+        Debug.Log("stageNum: " + stageNum);
 
         collectableManager.InitializeCollectableObjectsList();
         collectableManager.triggerStageClear = false;
@@ -101,20 +104,21 @@ public class StageManager : MonoBehaviour
 
         enemyManager.SetSpeedAllEnemies(stageInfo[stageNum][0], stageInfo[stageNum][1]);
 
-        playerController.ResetPlayerPosition();
         GameManager.instance.scoreMultiplier = 2;
 
     }
 
     public void LoadNextStage() {
-        Debug.Log("Loading " + stageNames[stageNamesIndex]);
         StartCoroutine(LoadNextStageWithDelay());
     }
 
     private IEnumerator LoadNextStageWithDelay() {
+        if (stageNamesIndex == 10) stageNamesIndex = 4;
+        if (stageNum != 11) stageNum++;
+        Debug.Log("Loading " + stageNames[stageNamesIndex]);
         SceneManager.LoadScene(stageNames[stageNamesIndex]);
         stageNamesIndex++;
-        stageNum++;
+        
         yield return new WaitForSeconds(3f);
         SetStageVariables();
     }

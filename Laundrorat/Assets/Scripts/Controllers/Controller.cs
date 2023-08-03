@@ -113,7 +113,7 @@ public class Controller : MonoBehaviour
 
     private GameObject GetJumpPointObject() {
         Debug.Log("GetJumpPointObject()");
-        Physics.Raycast(this.gameObject.transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask);
+        Physics.Raycast(this.gameObject.transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1.5f, jumpPointMask);
         GameObject jumpPointObject = hit.collider.gameObject;
         return jumpPointObject;
     }
@@ -131,7 +131,7 @@ public class Controller : MonoBehaviour
     }
 
     protected bool IsOverTrampoline() {
-        return Physics.Raycast(GetBottomOfCollider(), Vector2.down, out RaycastHit hit, 0.2f, trampolineMask);
+        return Physics.Raycast(GetBottomOfCollider(), Vector2.down, out RaycastHit hit, 0.5f, trampolineMask);
     }
 
     protected bool IsBouncingIntoCeiling() {
@@ -148,7 +148,7 @@ public class Controller : MonoBehaviour
     }
 
     protected bool CanEnterBouncing() {
-        return Physics.Raycast(this.gameObject.transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1f, jumpPointMask);
+        return Physics.Raycast(this.gameObject.transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1.5f, jumpPointMask);
     }
 
     protected GameObject GetExitPointObject() {
@@ -158,7 +158,7 @@ public class Controller : MonoBehaviour
     }
 
     protected Trampoline GetTrampoline() {
-        Physics.Raycast(GetBottomOfCollider(), Vector2.down, out RaycastHit hit, 0.2f, trampolineMask);
+        Physics.Raycast(GetBottomOfCollider(), Vector2.down, out RaycastHit hit, 0.5f, trampolineMask);
         Trampoline trampoline = hit.collider.gameObject.GetComponent<Trampoline>();
         return trampoline;
     }

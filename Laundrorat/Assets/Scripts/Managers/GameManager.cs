@@ -103,7 +103,8 @@ public class GameManager : MonoBehaviour
     private void ProceedToNextStage() {
         Debug.Log("ProceedToNextStage()");
         stageManager.LoadNextStage();
-        StartCoroutine(StageNumCutscene(stageManager.stageNum));
+        playerController.ResetPlayerPosition();
+        StartCoroutine(StageNumCutscene(stageManager.stageNum));   
     }
 
     #region Cutscenes
