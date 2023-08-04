@@ -42,7 +42,7 @@ public class Controller : MonoBehaviour
         trampolineMask = 1 << LayerMask.NameToLayer("Trampoline");
         wallMask = 1 << LayerMask.NameToLayer("Wall");
         exitPointMask = 1 << LayerMask.NameToLayer("TrampolineExitPoint");
-        floorMask = exitPointMask = 1 << LayerMask.NameToLayer("Floor");
+        floorMask = 1 << LayerMask.NameToLayer("Floor");
     }
 
     protected bool IsGrounded() {

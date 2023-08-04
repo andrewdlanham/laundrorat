@@ -47,8 +47,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(StageNumCutscene(stageManager.stageNum));
         cameraFollow.enabled = true;
         cameraFollow.SetPlayerReference();
-        stageManager.SetStageVariables();
-        
     }
 
     private void SetScriptReferences() {
@@ -80,6 +78,7 @@ public class GameManager : MonoBehaviour
     private void ReloadCurrentScene() {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
+        stageManager.SetStageVariables();
     }
 
     private void FreezeLevel() {
@@ -103,8 +102,8 @@ public class GameManager : MonoBehaviour
 
     private void ProceedToNextStage() {
         Debug.Log("ProceedToNextStage()");
-        stageManager.LoadNextStage();
         playerController.ResetPlayerPosition();
+        stageManager.LoadNextStage();
         StartCoroutine(StageNumCutscene(stageManager.stageNum));   
     }
 
@@ -115,8 +114,10 @@ public class GameManager : MonoBehaviour
         uiManager.ShowStageNum(stageNum);
         yield return new WaitForSeconds(2f);
         uiManager.HideStageNum();
+        stageManager.SetStageVariables();
         yield return new WaitForSeconds(1f);
         UnfreezeLevel();
+        
     }
 
     IEnumerator HurryUpCutscene() {
@@ -145,6 +146,7 @@ public class GameManager : MonoBehaviour
         audioManager.PlaySound("PlayerDeath");
         yield return new WaitForSeconds(3f);
         ReloadCurrentScene();
+        playerController.ResetPlayerPosition();
         UnfreezeLevel();
     }
 
