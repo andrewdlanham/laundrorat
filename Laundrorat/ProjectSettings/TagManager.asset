@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Collectable
   - Enemy
+  - Floor
   layers:
   - Default
   - TransparentFX

@@ -24,12 +24,13 @@ public class GameManager : MonoBehaviour
     private UIManager uiManager;
     private StageManager stageManager;
 
+    private CameraFollow cameraFollow;
+
     public int scoreMultiplier;
 
     void Awake() {
 
-        SetPlayerReference();
-        SetManagerReferences();
+        SetScriptReferences();
         scoreMultiplier = 2;
 
         if (instance == null) {
@@ -44,15 +45,14 @@ public class GameManager : MonoBehaviour
 
     void Start() {
         StartCoroutine(StageNumCutscene(stageManager.stageNum));
+        cameraFollow.enabled = true;
+        cameraFollow.SetPlayerReference();
         stageManager.SetStageVariables();
+        
     }
 
-    private void SetPlayerReference() {
+    private void SetScriptReferences() {
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
-    }
-    
-
-    private void SetManagerReferences() {
         collectableManager = GameObject.Find("CollectableManager").GetComponent<CollectableManager>();
         livesManager = GameObject.Find("LivesManager").GetComponent<LivesManager>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
         enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemyManager>();
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
+        cameraFollow = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
     }
 
     public void StageClear() {
@@ -134,6 +135,7 @@ public class GameManager : MonoBehaviour
         FreezeLevel();
         audioManager.PlaySound("PlayerDeath");
         yield return new WaitForSeconds(3f);
+        cameraFollow.enabled = false;
         SceneManager.LoadScene("MainMenu");
     }
 

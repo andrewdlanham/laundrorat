@@ -9,17 +9,22 @@ public class CameraFollow : MonoBehaviour
     private Vector3 cameraOffset;
 
     void Awake() {
-        player = GameObject.Find("Player").GetComponent<PlayerController>();
         cameraOffset = new Vector3(0,4.5f,-10);
     }
 
     void LateUpdate() {
-        Vector3 newPosition = cameraOffset;
-        newPosition.x += player.gameObject.transform.position.x;
-        //Debug.Log("newPosition: " + newPosition);
-        if (IsInBounds(newPosition)) {
-            transform.position = newPosition;
+        if (player != null) {
+            Vector3 newPosition = cameraOffset;
+            newPosition.x += player.gameObject.transform.position.x;
+            if (IsInBounds(newPosition)) {
+                transform.position = newPosition;
+            }
         }
+        
+    }
+
+    public void SetPlayerReference() {
+        player = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     private bool IsInBounds(Vector3 position) {

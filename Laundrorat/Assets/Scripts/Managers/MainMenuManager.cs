@@ -11,6 +11,11 @@ public class MainMenuManager : MonoBehaviour
         SceneManager.LoadScene("Stage1.1");
     }
 
+    public void LoadLevel1WithCheats() {
+        PlayerPrefs.SetInt("Lives", 99);
+        SceneManager.LoadScene("Stage1.1");
+    }
+
     private void ResetLives() {
         PlayerPrefs.SetInt("Lives", 3);
     }

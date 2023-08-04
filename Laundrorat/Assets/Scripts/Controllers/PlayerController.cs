@@ -61,6 +61,10 @@ public class PlayerController : Controller
 
     private void HandlePlayerMovement() {
         if (IsBouncing()) {
+            if(IsBouncingIntoFloor()) {
+                KillPlayer();
+                return;
+            }
             if (IsBouncingIntoTrampoline()) {
                 HandleTrampolineBounce();
                 ReverseVerticalDirection();
@@ -97,17 +101,19 @@ public class PlayerController : Controller
     }
 
     void OnCollisionEnter2D (Collision2D collision) {
-        GameObject.Find("GameManager").GetComponent<GameManager>().TriggerDeathSequence();
+        KillPlayer();
     }
 
-    
+    private void KillPlayer() {
+        Debug.Log("KillPlayer()");
+        GameObject.Find("GameManager").GetComponent<GameManager>().TriggerDeathSequence();
+    }
 
     private bool IsHoldingDirection() {
         return horizontalInput != 0;
     }
 
     
-
     private void HandleTrampolineBounce() {
         Trampoline trampoline = GetTrampoline();
         trampoline.RegisterBounce();

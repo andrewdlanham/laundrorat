@@ -10,6 +10,7 @@ public class Controller : MonoBehaviour
     public LayerMask trampolineMask;
     public LayerMask wallMask;
     public LayerMask exitPointMask;
+    public LayerMask floorMask;
     
     public float movementSpeed;
     public float bouncingSpeed;
@@ -41,6 +42,7 @@ public class Controller : MonoBehaviour
         trampolineMask = 1 << LayerMask.NameToLayer("Trampoline");
         wallMask = 1 << LayerMask.NameToLayer("Wall");
         exitPointMask = 1 << LayerMask.NameToLayer("TrampolineExitPoint");
+        floorMask = exitPointMask = 1 << LayerMask.NameToLayer("Floor");
     }
 
     protected bool IsGrounded() {
@@ -134,12 +136,20 @@ public class Controller : MonoBehaviour
         return Physics.Raycast(GetBottomOfCollider(), Vector2.down, out RaycastHit hit, 0.5f, trampolineMask);
     }
 
+    protected bool IsOverFloor() {
+        return Physics.Raycast(GetBottomOfCollider(), Vector2.down, out RaycastHit hit, 0.3f, floorMask);
+    }
+
     protected bool IsBouncingIntoCeiling() {
         return this.currentVerticalDirection == Vector2.up && IsUnderCeiling();
     }
 
     protected bool IsBouncingIntoTrampoline() {
         return this.currentVerticalDirection == Vector2.down && IsOverTrampoline();
+    }
+
+    protected bool IsBouncingIntoFloor() {
+        return this.currentVerticalDirection == Vector2.down && IsOverFloor();
     }
 
     protected bool CanExitBouncing() {
