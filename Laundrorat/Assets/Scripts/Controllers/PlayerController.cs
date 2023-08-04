@@ -158,5 +158,6 @@ public class PlayerController : Controller
 
     public void ResetPlayerPosition() {
         transform.position = new Vector3(12.75f, 1.35f, 0f);
+        SwitchToGrounded();
     }
 }

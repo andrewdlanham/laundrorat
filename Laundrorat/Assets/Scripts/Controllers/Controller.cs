@@ -11,6 +11,14 @@ public class Controller : MonoBehaviour
     public LayerMask wallMask;
     public LayerMask exitPointMask;
     public LayerMask floorMask;
+
+    // Raycast Lengths
+    private float jumpPointRCLength = 1.5f;
+    private float ceilingRCLength = 0.2f;
+    private float trampolineRCLength = 0.2f;
+    private float exitPointRCLength = 2.5f;
+
+    private float floorRCLength = 0.2f;
     
     public float movementSpeed;
     public float bouncingSpeed;
@@ -113,31 +121,34 @@ public class Controller : MonoBehaviour
         animator.SetBool("IsJumping", false);
     }
 
-    private GameObject GetJumpPointObject() {
-        Debug.Log("GetJumpPointObject()");
-        Physics.Raycast(this.gameObject.transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1.5f, jumpPointMask);
-        GameObject jumpPointObject = hit.collider.gameObject;
-        return jumpPointObject;
-    }
+    
 
     protected Vector2 GetTopOfCollider() {
         return (Vector2) this.gameObject.transform.position + new Vector2(0f, this.collider.bounds.extents.y);
     }
 
     protected Vector2 GetBottomOfCollider() {
-        return (Vector2) this.gameObject.transform.position +-new Vector2(0f, this.collider.bounds.extents.y);
+        return (Vector2) this.gameObject.transform.position - new Vector2(0f, this.collider.bounds.extents.y);
+    }
+
+    protected Vector2 GetLeftOfCollider() {
+        return new Vector2(this.collider.bounds.min.x, this.gameObject.transform.position.y);
+    }
+
+    protected Vector2 GetRightOfCollider() {
+        return new Vector2(this.collider.bounds.max.x, this.gameObject.transform.position.y);
     }
 
     protected bool IsUnderCeiling() {
-        return Physics.Raycast(GetTopOfCollider(), Vector2.up, out RaycastHit hit, 0.2f, ceilingMask);
+        return Physics.Raycast(GetTopOfCollider(), Vector2.up, out RaycastHit hit, ceilingRCLength, ceilingMask);
     }
 
     protected bool IsOverTrampoline() {
-        return Physics.Raycast(GetBottomOfCollider(), Vector2.down, out RaycastHit hit, 0.5f, trampolineMask);
+        return Physics.Raycast(GetBottomOfCollider(), Vector2.down, out RaycastHit hit, trampolineRCLength, trampolineMask);
     }
 
     protected bool IsOverFloor() {
-        return Physics.Raycast(GetBottomOfCollider(), Vector2.down, out RaycastHit hit, 0.3f, floorMask);
+        return Physics.Raycast(GetBottomOfCollider(), Vector2.down, out RaycastHit hit, floorRCLength, floorMask);
     }
 
     protected bool IsBouncingIntoCeiling() {
@@ -154,21 +165,48 @@ public class Controller : MonoBehaviour
 
     protected bool CanExitBouncing() {
         if (this.currentVerticalDirection == Vector2.down) return false;
-        return Physics.Raycast(this.gameObject.transform.position, this.currentHorizontalDirection, out RaycastHit hit, 2.5f, exitPointMask); 
+        if (IsHoldingLeft()) {
+            return Physics.Raycast(GetLeftOfCollider(), Vector2.left, out RaycastHit hit, exitPointRCLength, exitPointMask); 
+        } else {
+            return Physics.Raycast(this.gameObject.transform.position, this.currentHorizontalDirection, out RaycastHit hit, exitPointRCLength, exitPointMask); 
+        }
     }
 
     protected bool CanEnterBouncing() {
-        return Physics.Raycast(this.gameObject.transform.position, this.currentHorizontalDirection, out RaycastHit hit, 1.5f, jumpPointMask);
+        return Physics.Raycast(this.gameObject.transform.position, this.currentHorizontalDirection, out RaycastHit hit, jumpPointRCLength, jumpPointMask);
     }
 
     protected GameObject GetExitPointObject() {
-        Physics.Raycast(this.gameObject.transform.position, this.currentHorizontalDirection, out RaycastHit hit, 2.5f, exitPointMask);
-        GameObject exitPointObject = hit.collider.gameObject;
+        GameObject exitPointObject;
+        if (IsHoldingLeft()) {
+            Physics.Raycast(GetLeftOfCollider(), Vector2.left, out RaycastHit hit, exitPointRCLength, exitPointMask);
+            exitPointObject = hit.collider.gameObject;
+        } else {
+            Physics.Raycast(GetRightOfCollider(), Vector2.right, out RaycastHit hit, exitPointRCLength, exitPointMask);
+            exitPointObject = hit.collider.gameObject;
+        }
+        
         return exitPointObject;
     }
 
+    private GameObject GetJumpPointObject() {
+        Debug.Log("GetJumpPointObject()");
+        GameObject jumpPointObject;
+        if (IsHoldingLeft()) {
+            Physics.Raycast(GetLeftOfCollider(), Vector2.left, out RaycastHit hit, jumpPointRCLength, jumpPointMask);
+            jumpPointObject = hit.collider.gameObject;
+        } else {
+            Physics.Raycast(GetRightOfCollider(), Vector2.right, out RaycastHit hit, jumpPointRCLength, jumpPointMask);
+            jumpPointObject = hit.collider.gameObject;
+        }
+        
+        return jumpPointObject;
+
+        
+    }
+
     protected Trampoline GetTrampoline() {
-        Physics.Raycast(GetBottomOfCollider(), Vector2.down, out RaycastHit hit, 0.5f, trampolineMask);
+        Physics.Raycast(GetBottomOfCollider(), Vector2.down, out RaycastHit hit, trampolineRCLength, trampolineMask);
         Trampoline trampoline = hit.collider.gameObject.GetComponent<Trampoline>();
         return trampoline;
     }
@@ -179,6 +217,10 @@ public class Controller : MonoBehaviour
         } else if (currentHorizontalDirection.x < 0) {
             renderer.flipX = true;
         }
+    }
+
+    protected bool IsHoldingLeft() {
+        return this.currentHorizontalDirection == Vector2.left;
     }
 
     

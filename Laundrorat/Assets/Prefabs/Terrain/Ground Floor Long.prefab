@@ -96,6 +96,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Right Tramp
       objectReference: {fileID: 0}
+    - target: {fileID: 3353455672418217508, guid: 941216dc20c8b7d40a4487c6d6cd19bb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5445336139615128172, guid: 941216dc20c8b7d40a4487c6d6cd19bb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8162271643669423563, guid: 941216dc20c8b7d40a4487c6d6cd19bb, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -114,7 +122,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8162271643669423563, guid: 941216dc20c8b7d40a4487c6d6cd19bb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.01561212
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8162271643669423563, guid: 941216dc20c8b7d40a4487c6d6cd19bb, type: 3}
       propertyPath: m_LocalRotation.w
