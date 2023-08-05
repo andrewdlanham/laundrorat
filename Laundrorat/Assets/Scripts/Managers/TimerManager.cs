@@ -22,6 +22,7 @@ public class TimerManager : MonoBehaviour
             return;
         }
         DontDestroyOnLoad(gameObject);
+        InitializeTimer(99f);
     }
 
     void Update()

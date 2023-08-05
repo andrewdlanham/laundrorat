@@ -20,14 +20,19 @@ public class ScoreManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        
+        DontDestroyOnLoad(gameObject);
+        InitializeUI();
+    }
+
+
+    public void InitializeUI() {
         scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         highScoreText = GameObject.Find("HighScoreText").GetComponent<TextMeshProUGUI>();
         currentScore = PlayerPrefs.GetInt("Score");
         UpdateScoreText();
         UpdateHighScoreText();
-        DontDestroyOnLoad(gameObject);
     }
-
     
     public void AddPointsToScore(int numPoints) {
         currentScore += numPoints;

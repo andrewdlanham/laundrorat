@@ -17,10 +17,10 @@ public class LivesManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        numLives = PlayerPrefs.GetInt("Lives");
-        livesText = GameObject.Find("LivesText").GetComponent<TextMeshProUGUI>();
-        UpdateLivesText();
+        
         DontDestroyOnLoad(gameObject);
+
+        InitializeLivesText();
     }
 
     public void LoseALife() {
@@ -31,5 +31,11 @@ public class LivesManager : MonoBehaviour
 
     public void UpdateLivesText() {
         livesText.text = "L: " + numLives.ToString();
+    }
+
+    public void InitializeLivesText() {
+        numLives = PlayerPrefs.GetInt("Lives");
+        livesText = GameObject.Find("LivesText").GetComponent<TextMeshProUGUI>();
+        UpdateLivesText();
     }
 }

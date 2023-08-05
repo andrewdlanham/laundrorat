@@ -5,6 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
+    
+    void Awake() {
+        if(GameObject.Find("UI Canvas")) {
+            GameObject.Find("UI Canvas").SetActive(false);
+        }
+    }
+    
     public void LoadLevel1() {
         ResetLives();
         ResetScore();
