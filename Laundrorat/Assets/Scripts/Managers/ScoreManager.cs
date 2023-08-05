@@ -22,11 +22,10 @@ public class ScoreManager : MonoBehaviour
         }
         
         DontDestroyOnLoad(gameObject);
-        InitializeUI();
     }
 
 
-    public void InitializeUI() {
+    public void Initialize() {
         scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         highScoreText = GameObject.Find("HighScoreText").GetComponent<TextMeshProUGUI>();
         currentScore = PlayerPrefs.GetInt("Score");

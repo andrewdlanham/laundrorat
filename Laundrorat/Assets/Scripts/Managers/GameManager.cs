@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour
     private PlayerController playerController;
 
     // Manager References
-    private CollectableManager collectableManager;
     private LivesManager livesManager;
     private AudioManager audioManager;
     private TimerManager timerManager;
@@ -24,16 +23,11 @@ public class GameManager : MonoBehaviour
     private UIManager uiManager;
     private StageManager stageManager;
 
-    private ScoreManager scoreManager;
-
     private CameraFollow cameraFollow;
 
     public int scoreMultiplier;
 
     void Awake() {
-
-        SetScriptReferences();
-        scoreMultiplier = 2;
 
         if (instance == null) {
             instance = this;
@@ -46,15 +40,17 @@ public class GameManager : MonoBehaviour
     }
 
     void Start() {
-        //stageManager.SetUpStage();
-        //StartCoroutine(StageNumCutscene(stageManager.stageNum));
         cameraFollow.enabled = true;
         cameraFollow.SetPlayerReference();
     }
 
+    public void Initialize() {
+        SetScriptReferences();
+        ResetScoreMultiplier();
+    }
+
     private void SetScriptReferences() {
         playerController = GameObject.Find("Player").GetComponent<PlayerController>();
-        collectableManager = GameObject.Find("CollectableManager").GetComponent<CollectableManager>();
         livesManager = GameObject.Find("LivesManager").GetComponent<LivesManager>();
         audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         timerManager = GameObject.Find("TimerManager").GetComponent<TimerManager>();
@@ -62,7 +58,6 @@ public class GameManager : MonoBehaviour
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
         cameraFollow = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
-        scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
     }
 
     public void StageClear() {
@@ -79,29 +74,14 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ReloadCurrentScene() {
-        StartCoroutine(ReloadCurrentSceneWithDelay());
-    }
-
-    IEnumerator ReloadCurrentSceneWithDelay() {
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
-        FreezeLevel();
-        yield return new WaitForSeconds(3f);
-        livesManager.InitializeLivesText();
-        stageManager.SetUpStage();
-        UnfreezeLevel();
-
-    }
-
-    private void FreezeLevel() {
+    public void FreezeLevel() {
         Debug.Log("FreezeLevel()");
         playerController.enabled = false;
         timerManager.enabled = false;
         enemyManager.DisableAllEnemies();
     }
 
-    private void UnfreezeLevel() {
+    public void UnfreezeLevel() {
         Debug.Log("UnfreezeLevel()");
         playerController.enabled = true;
         timerManager.enabled = true;
@@ -149,9 +129,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("DeathCutscene()");
         FreezeLevel();
         audioManager.PlaySound("PlayerDeath");
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         playerController.ResetPlayerPosition();
-        ReloadCurrentScene();
+        stageManager.ReloadCurrentStage();
     }
 
     IEnumerator StageClearCutscene() {

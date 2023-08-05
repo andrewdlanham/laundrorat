@@ -19,6 +19,9 @@ public class UIManager : MonoBehaviour
     private TextMeshProUGUI StageNumText;
 
     private StageManager stageManager;
+    private GameManager gameManager;
+
+    private bool initialized = false;
     
     void Awake() {
         Debug.Log("UIManager Awake()");
@@ -37,18 +40,26 @@ public class UIManager : MonoBehaviour
         Debug.Log("UIManager Start()");
     }
 
-    public void InitializeUI() {
-        Debug.Log("UIManager.InitializeUI()");
-        HurryUpText = GameObject.Find("HurryUpText").GetComponent<TextMeshProUGUI>();
-        StageNumPanel = GameObject.Find("StageNumPanel");
-        StageClearedGO = GameObject.Find("StageClearedGO");
-        GameOverTextGO = GameObject.Find("GameOverGO");
-        StageNumTextGO = GameObject.Find("StageNumText");
+    public void Initialize() {
+        if (!initialized) {
+            Debug.Log("UIManager.Initialize()");
+            HurryUpText = GameObject.Find("HurryUpText").GetComponent<TextMeshProUGUI>();
+            StageNumPanel = GameObject.Find("StageNumPanel");
+            StageClearedGO = GameObject.Find("StageClearedGO");
+            GameOverTextGO = GameObject.Find("GameOverGO");
+            StageNumTextGO = GameObject.Find("StageNumText");
 
-        StageNumText = StageNumTextGO.GetComponent<TextMeshProUGUI>();
+            StageNumText = StageNumTextGO.GetComponent<TextMeshProUGUI>();
 
-        stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
+            stageManager = GameObject.Find("StageManager").GetComponent<StageManager>();
+            gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+            initialized = true;
+        }
+        
 
+    }
+
+    public void HideConditionalUI() {
         HideHurryUpText();
         HideGameOverText();
         HideStageClearedGO();
@@ -96,12 +107,10 @@ public class UIManager : MonoBehaviour
 
     IEnumerator StageNumCutscene() {
         Debug.Log("StageNumCutscene()");
-        //FreezeLevel();
         ShowStageNum(stageManager.stageNum);
         yield return new WaitForSeconds(2f);
         HideStageNum();
-        yield return new WaitForSeconds(1f);
-        //UnfreezeLevel();
+        gameManager.UnfreezeLevel();
     }
 
 }

@@ -19,8 +19,6 @@ public class LivesManager : MonoBehaviour
         }
         
         DontDestroyOnLoad(gameObject);
-
-        InitializeLivesText();
     }
 
     public void LoseALife() {

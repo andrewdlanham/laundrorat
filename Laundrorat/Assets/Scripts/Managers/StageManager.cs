@@ -10,9 +10,6 @@ public class StageManager : MonoBehaviour
 
     public int stageNum;
     [SerializeField] private int stageNamesIndex;
-    private int stageInfoIndex;
-
-    private bool loopingStages;
 
     private List<float[]> stageInfo;
     private List<string> stageNames;
@@ -22,11 +19,11 @@ public class StageManager : MonoBehaviour
     private EnemyManager enemyManager;
     private CollectableManager collectableManager;
 
-    private PlayerController playerController;
     private UIManager uiManager;
     private ScoreManager scoreManager;
 
     private GameManager gameManager;
+    private LivesManager livesManager;
 
     void Awake()
     {
@@ -42,8 +39,6 @@ public class StageManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
-
-        SetPlayerReference();
         SetManagerReferences();
         PopulateStageInfo();
         PopulateStageNames();
@@ -59,19 +54,13 @@ public class StageManager : MonoBehaviour
     private void SetManagerReferences()
     {
         collectableManager = GameObject.Find("CollectableManager").GetComponent<CollectableManager>();
-        //livesManager = GameObject.Find("LivesManager").GetComponent<LivesManager>();
-        //audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
         timerManager = GameObject.Find("TimerManager").GetComponent<TimerManager>();
         enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemyManager>();
         uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         scoreManager = GameObject.Find("ScoreManager").GetComponent<ScoreManager>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        livesManager = GameObject.Find("LivesManager").GetComponent<LivesManager>();
 
-    }
-
-    private void SetPlayerReference()
-    {
-        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     private void PopulateStageInfo()
@@ -116,22 +105,23 @@ public class StageManager : MonoBehaviour
         Debug.Log("SetUpStage()");
         Debug.Log("stageNum: " + stageNum);
 
-        uiManager.InitializeUI();
-        scoreManager.InitializeUI();
-
+        livesManager.InitializeLivesText();
+        timerManager.InitializeTimer(stageInfo[stageNum][2]);
         collectableManager.InitializeCollectableObjectsList();
         collectableManager.triggerStageClear = false;
+        scoreManager.Initialize();
+        
+        uiManager.Initialize();
+        uiManager.HideConditionalUI();
 
         enemyManager.InitializeEnemyObjectsList();
-        timerManager.InitializeTimer(stageInfo[stageNum][2]);
-
         enemyManager.SetSpeedAllEnemies(stageInfo[stageNum][0], stageInfo[stageNum][1]);
 
+        gameManager.Initialize();
+        gameManager.FreezeLevel();
         gameManager.ResetScoreMultiplier();
-
-        // TODO: Start stage num cutscene
+        
         uiManager.StartStageNumCutscene();
-
     }
 
     public void LoadNextStage()
@@ -146,10 +136,22 @@ public class StageManager : MonoBehaviour
         Debug.Log("Loading " + stageNames[stageNamesIndex]);
         SceneManager.LoadScene(stageNames[stageNamesIndex]);
         stageNamesIndex++;
-
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(0.1f);
         SetUpStage();
     }
+
+    public void ReloadCurrentStage() {
+        StartCoroutine(ReloadCurrentStageWithDelay());
+    }
+
+    private IEnumerator ReloadCurrentStageWithDelay() {
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
+        yield return new WaitForSeconds(3f);
+        SetUpStage();
+    }
+
+    
 
 
 
