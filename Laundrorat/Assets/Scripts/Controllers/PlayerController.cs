@@ -38,7 +38,7 @@ public class PlayerController : Controller
 
     void Update()
     {   
-        if (canDetectInput) {
+        if (canDetectInput && !IsJumping()) {
             UpdateInput();
         }
         
@@ -60,6 +60,13 @@ public class PlayerController : Controller
     }
 
     private void HandlePlayerMovement() {
+
+        if (IsJumping()) {
+            Debug.Log("Player is jumping");
+            // TODO: Handle jumping logic
+            return;
+        }
+
         if (IsBouncing()) {
             if(IsBouncingIntoFloor()) {
                 KillPlayer();
@@ -93,7 +100,7 @@ public class PlayerController : Controller
         if (IsGrounded()) {
             if (CanEnterBouncing()) {
                 EnterBouncing();
-                StartCoroutine(JumpInputBuffer());
+                //StartCoroutine(JumpInputBuffer());
                 return;
             }
             HandleHorizontalMovement();

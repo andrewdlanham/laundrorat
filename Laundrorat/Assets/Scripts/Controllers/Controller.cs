@@ -25,6 +25,8 @@ public class Controller : MonoBehaviour
 
     public bool isGrounded;
     public bool isBouncing;
+    
+    public bool isJumping;
 
     public Vector2 currentHorizontalDirection;
     public Vector2 currentVerticalDirection;
@@ -79,10 +81,11 @@ public class Controller : MonoBehaviour
 
     protected void EnterBouncing() {
         Debug.Log("EnterBouncing()");
-        SwitchToBouncing();
+        //SwitchToBouncing();
         GameObject jumpPointObject = GetJumpPointObject();
-        transform.position = jumpPointObject.transform.position;
-        this.currentVerticalDirection = Vector2.down;
+        JumpToObject(jumpPointObject);
+        //transform.position = jumpPointObject.transform.position;
+        //this.currentVerticalDirection = Vector2.down;
     }
 
     protected void ExitBouncing() {
@@ -114,11 +117,32 @@ public class Controller : MonoBehaviour
     }
 
     
-    private IEnumerator PlayJumpAnimation() {
+    private IEnumerator PlayJumpAnimation(GameObject obj) {
         Debug.Log("PlayJumpAnimation()");
-        animator.SetBool("IsJumping", true);
-        yield return new WaitForSeconds(2f);
-        animator.SetBool("IsJumping", false);
+        this.isJumping = true;
+        //animator.SetBool("IsJumping", true);
+        
+        // TODO: Handle jump animation
+        yield return new WaitForSeconds(1f / 60f); // Crouch for one frame
+
+        // Move towards object for some frames
+        Vector3 startingPosition = transform.position;
+        Vector3 endPosition = obj.transform.position;
+        Vector3 movementVector = (endPosition - startingPosition) / 30; 
+
+        for (int i = 0; i < 30; i++) {
+            transform.position += movementVector;
+            yield return new WaitForSeconds(1f / 60f);
+        }
+
+
+        this.isJumping = false;
+        //animator.SetBool("IsJumping", false);
+
+        //transform.position = obj.transform.position;
+        this.currentVerticalDirection = Vector2.down;
+
+        SwitchToBouncing();
     }
 
     
@@ -200,9 +224,7 @@ public class Controller : MonoBehaviour
             jumpPointObject = hit.collider.gameObject;
         }
         
-        return jumpPointObject;
-
-        
+        return jumpPointObject;        
     }
 
     protected Trampoline GetTrampoline() {
@@ -221,6 +243,14 @@ public class Controller : MonoBehaviour
 
     protected bool IsHoldingLeft() {
         return this.currentHorizontalDirection == Vector2.left;
+    }
+
+    protected void JumpToObject(GameObject obj) {
+        StartCoroutine(PlayJumpAnimation(obj));
+    }
+
+    protected bool IsJumping() {
+        return this.isJumping;
     }
 
     
