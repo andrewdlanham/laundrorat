@@ -170,8 +170,9 @@ public class PlayerController : Controller
 
     #endregion
 
-    public void ResetPlayerPosition() {
-        transform.position = new Vector3(12.75f, 1.35f, 0f);
+    public void ResetPlayer() {
+        currentFloor = 0;
+        transform.position = new Vector3(12.9f, 1.25f, 0f);
         SwitchToGrounded();
     }
 }

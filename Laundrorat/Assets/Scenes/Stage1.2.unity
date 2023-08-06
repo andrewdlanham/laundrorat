@@ -468,6 +468,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1955833045779348176, guid: d222ade140910ce4992c5db05da86eb9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.02
+      objectReference: {fileID: 0}
     - target: {fileID: 4853427639383830365, guid: d222ade140910ce4992c5db05da86eb9, type: 3}
       propertyPath: m_Name
       value: Coins

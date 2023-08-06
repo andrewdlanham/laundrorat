@@ -95,7 +95,7 @@ public class GameManager : MonoBehaviour
 
     private void ProceedToNextStage() {
         Debug.Log("ProceedToNextStage()");
-        playerController.ResetPlayerPosition();
+        playerController.ResetPlayer();
         stageManager.LoadNextStage();
         //StartCoroutine(StageNumCutscene(stageManager.stageNum));   
     }
@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour
         FreezeLevel();
         audioManager.PlaySound("PlayerDeath");
         yield return new WaitForSeconds(2f);
-        playerController.ResetPlayerPosition();
+        playerController.ResetPlayer();
         stageManager.ReloadCurrentStage();
     }
 
