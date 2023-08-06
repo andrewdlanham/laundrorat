@@ -147,7 +147,7 @@ public class StageManager : MonoBehaviour
     private IEnumerator ReloadCurrentStageWithDelay() {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.1f);
         SetUpStage();
     }
 

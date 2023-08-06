@@ -106,6 +106,7 @@ public class UIManager : MonoBehaviour
     }
 
     IEnumerator StageNumCutscene() {
+        HideConditionalUI();
         Debug.Log("StageNumCutscene()");
         ShowStageNum(stageManager.stageNum);
         yield return new WaitForSeconds(2f);

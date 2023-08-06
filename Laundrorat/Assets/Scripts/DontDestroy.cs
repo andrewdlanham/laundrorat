@@ -7,8 +7,8 @@ public class DontDestroy : MonoBehaviour
 
     public DontDestroy instance;
 
-    void Start()
-    {
+    void Awake() {
+        {
         if (instance == null) {
             instance = this;
         } else {
@@ -18,4 +18,6 @@ public class DontDestroy : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
     }
+    }
+    
 }
