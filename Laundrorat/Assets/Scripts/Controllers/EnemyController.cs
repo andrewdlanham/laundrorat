@@ -27,6 +27,11 @@ public class EnemyController : Controller
     }
 
     private void HandleEnemyMovement() {
+
+        if (IsJumping()) {
+            return;
+        }
+
         if (IsBouncing()) {
             if (IsBouncingIntoTrampoline() || IsBouncingIntoCeiling()) {
                 ReverseVerticalDirection();
@@ -41,6 +46,7 @@ public class EnemyController : Controller
 
             if (EnemyShouldExit()) {
                 ExitBouncing();
+                return;
             }
             ContinueBouncing();
         }
@@ -48,6 +54,7 @@ public class EnemyController : Controller
         if (IsGrounded()) {
             if (CanEnterBouncing()) {
                 EnterBouncing();
+                return;
             }
             HandleHorizontalMovement();
         }

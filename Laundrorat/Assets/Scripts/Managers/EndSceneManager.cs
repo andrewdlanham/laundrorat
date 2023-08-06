@@ -32,7 +32,8 @@ public class EndSceneManager : MonoBehaviour
             ShowHighScoreText();
         }
         yield return new WaitForSeconds(5f);
-        SceneManager.LoadScene("MainMenu");
+        Application.Quit();
+        //SceneManager.LoadScene("MainMenu");
     }
     
 }

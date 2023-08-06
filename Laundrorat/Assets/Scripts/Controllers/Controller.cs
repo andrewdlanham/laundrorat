@@ -72,7 +72,6 @@ public class Controller : MonoBehaviour
 
     protected void SwitchToBouncing() {
         Debug.Log("SwitchToBouncing()");
-        //StartCoroutine(PlayJumpAnimation());
         animator.SetBool("IsBouncing", true);
         this.GetComponent<BoxCollider2D>().enabled = false;
         this.isGrounded = false;
@@ -82,6 +81,7 @@ public class Controller : MonoBehaviour
     protected void EnterBouncing() {
         Debug.Log("EnterBouncing()");
         //SwitchToBouncing();
+        this.GetComponent<BoxCollider2D>().enabled = false;
         GameObject jumpPointObject = GetJumpPointObject();
         JumpToObject(jumpPointObject);
         //transform.position = jumpPointObject.transform.position;
@@ -140,9 +140,9 @@ public class Controller : MonoBehaviour
         //animator.SetBool("IsJumping", false);
 
         //transform.position = obj.transform.position;
+        SwitchToBouncing();
         this.currentVerticalDirection = Vector2.down;
 
-        SwitchToBouncing();
     }
 
     

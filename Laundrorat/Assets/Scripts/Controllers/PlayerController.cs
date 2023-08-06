@@ -62,7 +62,7 @@ public class PlayerController : Controller
     private void HandlePlayerMovement() {
 
         if (IsJumping()) {
-            Debug.Log("Player is jumping");
+            //Debug.Log("Player is jumping");
             // TODO: Handle jumping logic
             return;
         }
