@@ -1379,6 +1379,7 @@ MonoBehaviour:
   bouncingSpeed: 0
   isGrounded: 0
   isBouncing: 0
+  isJumping: 0
   currentHorizontalDirection: {x: 0, y: 0}
   currentVerticalDirection: {x: 0, y: 0}
   currentFloor: 0
@@ -1449,8 +1450,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1561903057}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 12.75, y: 1.35, z: 0}
-  m_LocalScale: {x: 0.6764, y: 0.6881837, z: 0}
+  m_LocalPosition: {x: 12.921, y: 1.26, z: 0}
+  m_LocalScale: {x: 0.5109526, y: 0.519854, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2764,7 +2765,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6760401098030110831, guid: b3c5d662cc7d54a45bc796709720f313, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.96
+      value: 9.15
       objectReference: {fileID: 0}
     - target: {fileID: 6760401098030110831, guid: b3c5d662cc7d54a45bc796709720f313, type: 3}
       propertyPath: m_LocalPosition.y

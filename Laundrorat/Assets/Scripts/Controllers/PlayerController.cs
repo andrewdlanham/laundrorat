@@ -98,6 +98,13 @@ public class PlayerController : Controller
         }
 
         if (IsGrounded()) {
+            if (IsHoldingDirection()) {
+                animator.SetBool("IsRunning", true);
+                animator.SetBool("IsIdle", false);
+            } else {
+                animator.SetBool("IsRunning", false);
+                animator.SetBool("IsIdle", true);
+            }
             if (CanEnterBouncing()) {
                 EnterBouncing();
                 //StartCoroutine(JumpInputBuffer());
