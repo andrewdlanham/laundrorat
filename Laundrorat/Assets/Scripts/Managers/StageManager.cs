@@ -68,18 +68,18 @@ public class StageManager : MonoBehaviour
         Debug.Log("PopulateStageInfo()");
         stageInfo = new List<float[]> { };
         stageInfo.Add(new float[3] { 0f, 0f, 0f });    // This entry should never be accessed since there is no Stage 0
-        stageInfo.Add(new float[3] { 1.5f, 3f, 35f }); // Stage 1.1
-        stageInfo.Add(new float[3] { 1.5f, 3f, 35f }); // Stage 1.2
-        stageInfo.Add(new float[3] { 1.5f, 3f, 35f }); // Stage 2.1
-        stageInfo.Add(new float[3] { 1.5f, 3f, 35f }); // Stage 2.2
-        stageInfo.Add(new float[3] { 1.5f, 3f, 35f }); // Stage 3.1
-        stageInfo.Add(new float[3] { 1.5f, 3f, 35f }); // Stage 3.2
-        stageInfo.Add(new float[3] { 1.5f, 3f, 35f }); // Stage 1.3
-        stageInfo.Add(new float[3] { 1.5f, 3f, 35f }); // Stage 1.4
-        stageInfo.Add(new float[3] { 1.5f, 3f, 35f }); // Stage 2.3
-        stageInfo.Add(new float[3] { 1.5f, 3f, 35f }); // Stage 2.4
+        stageInfo.Add(new float[3] { 1.4f, 2.5f, 60f }); // Stage 1.1
+        stageInfo.Add(new float[3] { 1.4f, 2.5f, 60f }); // Stage 1.2
+        stageInfo.Add(new float[3] { 1.6f, 2.7f, 50f }); // Stage 2.1
+        stageInfo.Add(new float[3] { 1.6f, 2.7f, 50f }); // Stage 2.2
+        stageInfo.Add(new float[3] { 1.8f, 2.9f, 40f }); // Stage 3.1
+        stageInfo.Add(new float[3] { 1.8f, 2.9f, 40f }); // Stage 3.2
+        stageInfo.Add(new float[3] { 2f, 3f, 35f }); // Stage 1.3
+        stageInfo.Add(new float[3] { 2f, 3f, 35f }); // Stage 1.4
+        stageInfo.Add(new float[3] { 2.25f, 3.25f, 30f }); // Stage 2.3
+        stageInfo.Add(new float[3] { 2.25f, 3.25f, 30f }); // Stage 2.4
 
-        stageInfo.Add(new float[3] { 1.5f, 3f, 35f }); // All stages afterwards
+        stageInfo.Add(new float[3] { 2.5f, 3.5f, 30f }); // All stages afterwards
     }
 
     private void PopulateStageNames()

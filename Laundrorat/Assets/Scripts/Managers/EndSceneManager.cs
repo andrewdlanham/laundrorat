@@ -18,7 +18,7 @@ public class EndSceneManager : MonoBehaviour
     }
 
     private void SetScoreText() {
-        scoreText.text = "FINAL SCORE: " + PlayerPrefs.GetInt("Score");
+        scoreText.text = PlayerPrefs.GetInt("Score").ToString();
     }
 
     private void ShowHighScoreText() {

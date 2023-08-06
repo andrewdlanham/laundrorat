@@ -27,8 +27,8 @@ public class PlayerController : Controller
 
         SetComponentReferences();
         SetLayerMasks();
-        this.movementSpeed = 3f;
-        this.bouncingSpeed = 4f;
+        this.movementSpeed = 2f;
+        this.bouncingSpeed = 3f;
         this.currentFloor = 0;
         this.currentTrampoline = null;
         SwitchToGrounded();
@@ -62,8 +62,6 @@ public class PlayerController : Controller
     private void HandlePlayerMovement() {
 
         if (IsJumping()) {
-            //Debug.Log("Player is jumping");
-            // TODO: Handle jumping logic
             return;
         }
 
@@ -82,12 +80,14 @@ public class PlayerController : Controller
                 return;
             }
             if (IsHoldingDirection()) {
+                /*
                 if (CanBounceOffWall()) {
                     Debug.Log("currentHorizontalDirection: " + currentHorizontalDirection);
                     Debug.Log("Bounced off wall");
                     this.currentVerticalDirection = Vector2.down;
                     return;
                 }
+                */
                 if (CanExitBouncing()) {
                     ExitBouncing();
                     return;
