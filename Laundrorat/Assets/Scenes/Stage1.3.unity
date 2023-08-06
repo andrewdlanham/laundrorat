@@ -180,7 +180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8112263662246384111, guid: b3c5d662cc7d54a45bc796709720f313, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b3c5d662cc7d54a45bc796709720f313, type: 3}
@@ -344,6 +344,10 @@ PrefabInstance:
     - target: {fileID: 6347952329358346935, guid: d7d940ee26bade64b97a81972ed4f7ee, type: 3}
       propertyPath: m_Name
       value: ScorePopup
+      objectReference: {fileID: 0}
+    - target: {fileID: 6347952329358346935, guid: d7d940ee26bade64b97a81972ed4f7ee, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7d940ee26bade64b97a81972ed4f7ee, type: 3}
@@ -543,7 +547,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2004885684
 Transform:
   m_ObjectHideFlags: 0
@@ -833,7 +837,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2411200369892655318
 Transform:
   m_ObjectHideFlags: 0

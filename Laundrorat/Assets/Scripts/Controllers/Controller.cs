@@ -13,7 +13,7 @@ public class Controller : MonoBehaviour
     public LayerMask floorMask;
 
     // Raycast Lengths
-    private float jumpPointRCLength = 1.5f;
+    private float jumpPointRCLength = 0.5f;
     private float ceilingRCLength = 0.2f;
     private float trampolineRCLength = 0.2f;
     private float exitPointRCLength = 2.5f;
